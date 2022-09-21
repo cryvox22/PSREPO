@@ -1,0 +1,1 @@
+Set-ADSyncScheduler -SyncCycleEnabled $false
