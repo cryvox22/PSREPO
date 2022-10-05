@@ -1,3 +1,6 @@
+#Documentation: https://adamtheautomator.com/powershell-import-active-directory/
+
+
 
 function Get-OldComputerObjects{
 Get-ADComputer -Filter * -Properties operatingsystem,lastlogondate | Where-Object {($_.operatingsystem -notlike "*Server*") -and ($_.lastlogondate -le ((Get-Date).adddays(-365)))} | Sort-Object Lastlogondate | Format-Table Name,Lastlogondate
