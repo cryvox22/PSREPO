@@ -20,7 +20,7 @@ function DisableSMB1{
 
     $Smb1State = (Get-WindowsOptionalFeature -Online -FeatureName SMB1Protocol).state
 
-    if($Smb1State -eq "false"){
+    if($Smb1State -eq "Disabled"){
         Write-Host -ForegroundColor Green "SMB1 ist bereits deaktiviert!"
     }
     else{
