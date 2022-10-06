@@ -1,5 +1,6 @@
+Write-Host -ForegroundColor Green "WinRM-Aktivierung wird gestartet..."
+
 Enable-PSRemoting
 winrm quickconfig -force
 
-
-test
+Write-Host -ForegroundColor Green "WinRM-Aktivierung ist abgeschlossen!"
