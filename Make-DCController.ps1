@@ -1,0 +1,1 @@
+#mit diesem Skript soll der Server zu einem DC hochgestuft werden 
