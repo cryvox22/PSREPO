@@ -14,7 +14,7 @@ function GetSqlModule{
         $UserInput1 = Read-Host
         if($UserInput1 -eq "j" -or $UserInput1 -eq "J"){
             Write-Host -ForegroundColor Green "Modul wird upgedatet..."
-            Update-Module -Name SqlServer -AllowClobber -Force
+            Update-Module -Name SqlServer -Force
             Write-Host -ForegroundColor Green "Modul ist upgedatet!"
         }else{
             Write-Host -ForegroundColor Green "Modul wird nicht upgedatet!"
