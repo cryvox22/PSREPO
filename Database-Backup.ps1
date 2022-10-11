@@ -14,7 +14,7 @@ function GetSqlModule{
         $UserInput1 = Read-Host
         if($UserInput1 -eq "j" -or $UserInput1 -eq "J"){
             Write-Host -ForegroundColor Green "Modul wird upgedatet..."
-            Update-Module -Name SqlServer -AllowClobber
+            Update-Module -Name SqlServer -AllowClobber -Force
             Write-Host -ForegroundColor Green "Modul ist upgedatet!"
         }else{
             Write-Host -ForegroundColor Green "Modul wird nicht upgedatet!"
@@ -22,7 +22,7 @@ function GetSqlModule{
         
     }else{
         Write-Host -ForegroundColor Green "Modul wird installiert..."
-        Install-Module -Name SqlServer
+        Install-Module -Name SqlServer -Force
         Write-Host -ForegroundColor Green "Modul ist installiert!"
     }
 }
@@ -62,3 +62,5 @@ function GetRemoteSqlInstances{
     Get-SqlInstance -Credential $AdminCredentials -MachineName $LocalHostname
     
 }
+
+GetSqlModule
