@@ -13,19 +13,12 @@ function GetFolderFiles{
         Get-ChildItem -Path $FolderPath | Select-Object Name, DirectoryName | Format-Table -AutoSize
     }
 
-
-    Write-Host -ForegroundColor Green "Hier deine Auflistung: "
-    Get-ChildItem -Path $FolderPath | Select-Object Name, DirectoryName | Format-Table -AutoSize
-
-    Write-Host -ForegroundColor Cyan -NoNewline "Moechtest du einen weiteren Pfad prüfen? (J/N) :"
+    Write-Host -ForegroundColor Cyan -NoNewline "Moechtest du einen weiteren Pfad pruefen? (J/N) :"
     $UserInput2 = Read-Host
     if($UserInput2 -eq "j" -or $UserInput2 -eq "J"){
         Clear-Host
         GetFolderFiles
-    }else{
-        exit
     }
-
     
 }
 
