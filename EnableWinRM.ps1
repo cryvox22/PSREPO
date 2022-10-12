@@ -13,3 +13,4 @@ function EnableWinRM {
     }
     Write-Host -ForegroundColor Cyan "WinRM Pruefung ist abgeschlossen!"
 }
+EnableWinRM
