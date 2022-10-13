@@ -11,10 +11,31 @@ function PushPSRepoToInstall{
     Write-Host -ForegroundColor Green "Der Push war erfolgreich!"
     Write-Host -ForegroundColor Green "Folgende Dateien wurden kopiert: "
    
-    $vergleich = Compare-Object -ReferenceObject $SourceItems -DifferenceObject $DestinationItems
-    Write-Host -ForegroundColor Green $vergleich | Format-Table -AutoSize
+
+
+
+
+    $Vergleich = @($SourceItems, $DestinationItems)
+
+
+    
+
+    
+    for($parentloop=0; $parentloop -lt $Vergleich.Length; $parentloop++){
+        $x=$Vergleich[$parentloop][$childloop].FullName
+        Write-Host $x.Remove($SourceRepo)
+        for($childloop=0; $childloop -lt $Vergleich.$SourceItems.Length; $childloop++){
+                
+           
+           Write-host $Vergleich[$parentloop][$childloop].FullName
+       }
+    }
+    
     # 
    
+
+
+
 }
 
 PushPSRepoToInstall
