@@ -12,7 +12,7 @@ function PushPSRepoToInstall{
     Write-Host -ForegroundColor Green "Folgende Dateien wurden kopiert: "
    
     $vergleich = Compare-Object -ReferenceObject $SourceItems -DifferenceObject $DestinationItems
-    Write-Host -ForegroundColor Green
+    Write-Host -ForegroundColor Green $vergleich
     # 
    
 }
