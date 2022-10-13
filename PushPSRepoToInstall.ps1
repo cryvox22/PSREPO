@@ -11,10 +11,9 @@ function PushPSRepoToInstall{
     Write-Host -ForegroundColor Green "Der Push war erfolgreich!"
     Write-Host -ForegroundColor Green "Folgende Dateien wurden kopiert: "
    
-    Compare-Object -ReferenceObject $SourceItems -DifferenceObject $DestinationItems
-    
-    $SourceItems[0].FullName
-    $SourceItems.Length
+    $vergleich = Compare-Object -ReferenceObject $SourceItems -DifferenceObject $DestinationItems
+    Write-Host -ForegroundColor Green 
+   
 }
 
 PushPSRepoToInstall
