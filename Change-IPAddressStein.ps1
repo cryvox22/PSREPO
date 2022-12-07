@@ -19,15 +19,15 @@ switch ($Input1)
 {
 1{ 
     
-    New-NetIPAddress -InterfaceIndex $InterfaceIndex -IPAddress 192.168.0.55 -PrefixLength 24
+    netsh interface ipv4 set address name=$InterfaceIndex source=static address=192.168.0.55 mask=255.255.255.0
     Write-Host -ForegroundColor Cyan "Die IP-Adresse wurde angepasst!"
     ; Break}
 2{
-    New-NetIPAddress -InterfaceIndex $InterfaceIndex -IPAddress 192.168.0.8 -PrefixLength 24
+    netsh interface ipv4 set address name=$InterfaceIndex source=static address=192.168.0.8 mask=255.255.255.0
     Write-Host -ForegroundColor Cyan "Die IP-Adresse wurde angepasst!"
     ; Break}
 3{
-    New-NetIPAddress -InterfaceIndex $InterfaceIndex -IPAddress 192.168.0.9 -PrefixLength 24
+    netsh interface ipv4 set address name=$InterfaceIndex source=static address=192.168.0.9 mask=255.255.255.0
     Write-Host -ForegroundColor Cyan "Die IP-Adresse wurde angepasst!"
     ; Break}
 
