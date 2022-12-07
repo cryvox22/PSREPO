@@ -1,7 +1,8 @@
 function GetIPAddress{
 
     Write-Host -ForegroundColor Green "Ihre IP-Adresse wird ausgelesen..."
-    Get-NetIPAddress | Where-Object  {$_.AddressFamily -eq "IPv4" -and $_.InterfaceAlias -clike "Ethernet*"} | Select-Object InterfaceAlias, IPAddress
+    $IPOverview = Get-NetIPAddress | Where-Object  {$_.AddressFamily -eq "IPv4" -and $_.InterfaceAlias -clike "Ethernet*"} | Select-Object InterfaceAlias, IPAddress
+    $IPOverview
         
       
 }
