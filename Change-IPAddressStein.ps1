@@ -1,7 +1,7 @@
 
 #Change-IPAddressStein
 function ChangeIPAddress{
-netsh interface ipv4 show Interfaces
+
 Write-Host -ForegroundColor Cyan "Dieses Tool hilft Ihnen ihre IP-Adresse passend für die Siemens SmartClient anzupassen!"
 Write-Host ""
 Write-Host -ForegroundColor Cyan "Folgende Adressen haben Sie zur Auswahl:"
