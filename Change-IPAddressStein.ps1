@@ -2,8 +2,6 @@
 #Change-IPAddressStein
 function ChangeIPAddress{
 
-$InterfaceIndex = 5
-
 Write-Host -ForegroundColor Cyan "Dieses Tool hilft Ihnen ihre IP-Adresse passend für die Siemens SmartClient anzupassen!"
 Write-Host ""
 Write-Host -ForegroundColor Cyan "Folgende Adressen haben Sie zur Auswahl:"
@@ -18,7 +16,6 @@ $Input1 = Read-Host
 switch ($Input1)
 {
 1{ 
-    
     netsh interface ipv4 set address name=5 source=static address=192.168.0.55 mask=255.255.255.0
     Write-Host -ForegroundColor Cyan "Die IP-Adresse wurde angepasst!"
     ; Break}
@@ -32,10 +29,9 @@ switch ($Input1)
     ; Break}
 
 4{
-    Set-NetIPInterface -InterfaceIndex $InterfaceIndex  -Dhcp Enabled
+    Set-NetIPInterface -InterfaceIndex 5 -Dhcp Enabled
     Write-Hoste -ForegroundColor Cyan "Die IP-Adresse wurde wieder auf Standard gesetzt!"
-
-}
+    ; Break}
 
 Default {    Write-Host -ForegroundColor Cyan "Keine Übereinstimmung" }
 
