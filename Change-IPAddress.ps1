@@ -1,15 +1,10 @@
-function GetIPAddress{
-
     Write-Host -ForegroundColor Green "Ihre IP-Adresse wird ausgelesen..."
     $IPOverview = Get-NetIPAddress | Where-Object  {$_.AddressFamily -eq "IPv4" -and $_.InterfaceAlias -clike "Ethernet*"} | Select-Object InterfaceAlias, IPAddress
-    $IPOverview
-        
-      
-}
-
-
-
-function SetIPAddress {
+ 
+    Write-Host -ForegroundColor Cyan "Interface Alias: " $IPOverview[0].InterfaceAlias
+    Write-Host -ForegroundColor Cyan "Interface IP: " $IPOverview[0].IPAddress
+    Write-Host -ForegroundColor Cyan "Interface Alias: " $IPOverview[1].InterfaceAlias
+    Write-Host -ForegroundColor Cyan "Interface IP: " $IPOverview[1].IPAddress
 
     Write-Host -ForegroundColor Green -NoNewline "Moechten Sie die IP-Adresse des Netzwerkadapters aendern? (Y/N)"
     $Input1 = Read-Host
@@ -21,25 +16,21 @@ function SetIPAddress {
     $InputIPAddress = Read-Host
 
 
-    $IntefaceIndex = Get-NetIPAddress -InterfaceAlias $InputAdapterAlias | Select-Object InterfaceIndex
-    Set-NetIPAddress -InterfaceIndex $IntefaceIndex -IPAddress $InputIPAddress -PrefixLength 24
+    $InterfaceIndex = (Get-NetIPAddress -InterfaceAlias $InputAdapterAlias).InterfaceIndex
+    $InterfaceIndex = [convert]::ToInt32($InterfaceIndex)
+    New-NetIPAddress -InterfaceIndex $InterfaceIndex -IPAddress $InputIPAddress -PrefixLength 24
     Write-Host -ForegroundColor Green "Ihre IP Adresse wurde für Netzwerkadapter $InputAdapterAlias auf $inputIPAddress gesetzt!"
     }
-}
 
 
-function SetIPAddressDHCP{
     Write-Host -ForegroundColor Green -NoNewline "Moechten Sie den Netzwerkadapter $InputAdapterAlias wieder auf DHCP umstellen? (Y/N)"
     $Input2 = Read-Host
     if($Input2 -eq "y" -or $Input2 -eq "Y"){
-        Set-NetIPInterface -InterfaceIndex $IntefaceIndex  -Dhcp Enabled
+        Set-NetIPInterface -InterfaceIndex $InterfaceIndex  -Dhcp Enabled
         Write-Host -ForegroundColor Green "Der Netzwerkadapter wurde auf DHCP umgestellt!"
     }
     else {
         <# Action when all if and elseif conditions are false #>
     }
-}
 
-GetIPAddress
-SetIPAddress
-SetIPAddressDHCP
+
