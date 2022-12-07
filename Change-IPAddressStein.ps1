@@ -30,7 +30,7 @@ switch ($Input1)
 
 4{
     Set-NetIPInterface -InterfaceIndex 5 -Dhcp Enabled
-    Write-Hoste -ForegroundColor Cyan "Die IP-Adresse wurde wieder auf Standard gesetzt!"
+    Write-Host -ForegroundColor Cyan "Die IP-Adresse wurde wieder auf Standard gesetzt!"
     ; Break}
 
 Default {    Write-Host -ForegroundColor Cyan "Keine Übereinstimmung" }
