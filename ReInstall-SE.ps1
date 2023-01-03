@@ -1,34 +1,3 @@
-function UninstallSE {
-
-Skip to content
-Product
-Solutions
-Open Source
-Pricing
-Search
-Sign in
-Sign up
-Server-Eye
-/
-se-installer-cli
-Public
-Code
-Issues
-Pull requests
-1
-Actions
-Projects
-Wiki
-Security
-Insights
-se-installer-cli/de/Uninstall-ServerEye.ps1
-@ReneThulke
-ReneThulke Signed
-Latest commit a848541 on Nov 2, 2021
- History
- 1 contributor
-664 lines (608 sloc)  29.1 KB
-
 #Requires -Version 5.0
 #Requires -RunAsAdministrator
 
@@ -680,29 +649,10 @@ else {
 # Db5Kr4xd3cxoJs78vgK91EKQ+dDZmuwXieE6goj36KRPgMlum9/yu7I3j2ATUsHc
 # dyu9v8LWYjL+pXFb6vC2iFuHYeivfw==
 # SIG # End signature block
-Footer
-© 2023 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-
-
-}
 
 
 
 
-
-function InstallSE{# Server-Eye GPO Install
 # Version 2.0
 # Author: Thomas Krammes
 # Author: Andreas Behr
@@ -746,9 +696,4 @@ else {
 
 
 Copy-Item $logdatei $remoteLog 
-}
-
-
-UninstallSE
-InstallSE
 
