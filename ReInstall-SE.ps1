@@ -216,7 +216,7 @@ Function Remove-LocalFiles {
             Register-FileToDelete -Source $Path
         }
         else {
-            Write-Output $_
+            
         }
             
     }
@@ -350,7 +350,6 @@ if ((Test-Path $SEInstPath) -eq $true) {
         }
         catch {
             Write-EventLog -LogName $EventLogName -Source $EventSourceName -EventID 3010 -EntryType Error -Message "Error: $_"
-            Write-Output "Error: $_"
         }
         
     }
@@ -391,7 +390,6 @@ if ((Test-Path $SEInstPath) -eq $true) {
     }
     catch {
         Write-EventLog -LogName $EventLogName -Source $EventSourceName -EventID 3010 -EntryType Error -Message "Error: $_"
-        Write-Output "Error: $_"
     }
 
 }
@@ -421,7 +419,6 @@ elseif (((Test-Path $SEDataPath) -eq $true)) {
         }
         catch {
             Write-EventLog -LogName $EventLogName -Source $EventSourceName -EventID 3010 -EntryType Error -Message "Error: $_"
-            Write-Output "Error: $_"
         }
         
     }
@@ -440,7 +437,6 @@ elseif (((Test-Path $SEDataPath) -eq $true)) {
     }
     catch {
         Write-EventLog -LogName $EventLogName -Source $EventSourceName -EventID 3010 -EntryType Error -Message "Error: $_"
-        Write-Output "Error: $_" 
     }
 
 }
