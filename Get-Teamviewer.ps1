@@ -9,3 +9,4 @@ $DownloadURL = "https://slsvde-my.sharepoint.com/:f:/g/personal/p_gentner_sl-sv_
 
 Invoke-WebRequest -Uri $DownloadURL -OutFile TeamViewer.msi
 #/qn APITOKEN=19910524-dWzmY4xQ3FvO8WbjoOyG CUSTOMCONFIGID=6834ixj ASSIGNMENTOPTIONS="--alias %ComputerName% --grant-easy-access"
+Read-Host
