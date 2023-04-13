@@ -30,3 +30,4 @@ Get-SECustomer
 #    Get-SECustomer -Filter $inputCustomer | Get-Sensor -Filter * | New-SENotification -UserID
 #}
 
+Read-Host
