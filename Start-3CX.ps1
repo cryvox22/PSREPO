@@ -6,7 +6,7 @@ Write-Host -ForegroundColor Cyan  "3CX-Dienste werden gestartet...!"
 
 
 function start3CX{
-    Start-Service -Name *3cx*
+    Start-Service -Name *3cx*| Where-Object{$_.StartType -eq "Automatic"}
     Get-Service -Name *3cx* | Select-Object Name, Status  
 }
 start3CX
