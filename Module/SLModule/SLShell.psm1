@@ -40,19 +40,12 @@ function ModuleStarted{
 }
 
 function Doc{
-#----------------------
 
-#Variablen: 
-#----------------------
-#----------------------
-#Programm
-#----------------------
-Clear-Host
 
-write-host "`n"
-Write-Host "Welcome to SL-Doc" 
 Write-Host "-------------------------------------------"
-Write-Host "Wir werden nacheinander alle relevanten Systemdaten auslesen und in Ihre Zwischenablage kopieren!" 
+Write-Host -ForegroundColor Cyan "Welcome to SL-Doc" 
+Write-Host "-------------------------------------------"
+Write-Host -ForegroundColor Yellow "Wir werden nacheinander alle relevanten Systemdaten auslesen und in Ihre Zwischenablage kopieren!" 
 write-host "`n"
 
 #----------------------
@@ -66,8 +59,7 @@ $hostname | clip
 Write-Host -NoNewline "Der Hostname "
 Write-Host -NoNewline -ForegroundColor Yellow $hostname
 Write-Host " befindet sich jetzt in der Zwischenablage!"
-Write-Host "`n"
-pause
+Read-Host
 
 #----------------------
 #Seriennummer
@@ -80,8 +72,7 @@ $serial | clip
 Write-Host -NoNewline "Die Seriennummer " 
 Write-Host -NoNewline -ForegroundColor Yellow $serial
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-write-host "`n"
-pause
+Read-Host
 
 
 #----------------------
@@ -96,8 +87,7 @@ $Modell | clip
 Write-Host -NoNewline "Das Modell:  " 
 Write-Host -NoNewline -ForegroundColor Yellow $Modell
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-write-host "`n"
-pause
+Read-Host
 
 #----------------------
 #Installiert am: 
@@ -105,13 +95,14 @@ pause
 Write-Host "-------------------------------------------"
 Write-Host "Installiert am: "
 Write-Host "-------------------------------------------"
-Write-Host -NoNewline "Das Device " $hostname " wurde am folgenden Tag installiert: "   
+Write-Host -NoNewline "Das Device " 
+Write-Host -NoNewline -ForegroundColor Cyan $hostname
+Write-Host -NoNewline " wurde am folgenden Tag installiert: "   
 $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate ) 
 Write-Host -NoNewline -ForegroundColor Yellow $installdate
 $installdate | clip
-Write-Host "Das Installationsdatum befindet sich jetzt in der Zwischenablage!"
-write-host "`n"
-pause
+Write-Host " Das Installationsdatum befindet sich jetzt in der Zwischenablage!"
+Read-Host
 
 
 #----------------------
@@ -125,8 +116,7 @@ $hostname | clip
 Write-Host -NoNewline "Der Hostname "
 Write-Host -NoNewline -ForegroundColor Yellow $hostname
 Write-Host " befindet sich jetzt in der Zwischenablage!"
-Write-Host "`n"
-pause
+Read-Host
 
 #----------------------
 #IP-Addresse
@@ -139,8 +129,7 @@ $ip | clip
 Write-Host -NoNewline "Die IP-Addresse " 
 Write-Host -NoNewline -ForegroundColor Yellow $ip 
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-Write-Host "`n"
-pause
+Read-Host
 
 
 
@@ -169,8 +158,7 @@ $mac | clip
 Write-Host -NoNewline "Die Mac-Addresse " 
 Write-Host -NoNewline -ForegroundColor Yellow $mac
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-write-host "`n"
-pause
+Read-Host
 
 
 #----------------------
@@ -184,8 +172,7 @@ $gateway | clip
 Write-Host -NoNewline "Das Gateway  " 
 Write-Host -NoNewline -ForegroundColor Yellow $gateway 
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-write-host "`n"
-pause
+Read-Host
 
 #----------------------
 #OS
@@ -199,8 +186,7 @@ $os | clip
 Write-Host -NoNewline "Die Betriebssystemversion " 
 Write-Host -NoNewline -ForegroundColor Yellow $os 
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-write-host "`n"
-pause
+Read-Host
 
 
 #----------------------
@@ -214,30 +200,31 @@ $WindowsKey | clip
 Write-Host -NoNewline "Der Windows-Key " 
 Write-Host -NoNewline -ForegroundColor Yellow $WindowsKey 
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-pause
+Read-Host
 
 Clear-Host
-Write-Host -ForegroundColor Yellow "Zusammenfassung:"
-Write-Host -ForegroundColor Yellow "Hostname:"
-Write-Host $hostname "`n"
-Write-Host -ForegroundColor Yellow "Seriennummer:"
-Write-Host $serial "`n"
-Write-Host -ForegroundColor Yellow "Modell:" 
-Write-Host $Modell "`n"
-Write-Host -ForegroundColor Yellow "Installiert am:"
-Write-Host $installdate "`n"
-Write-Host -ForegroundColor Yellow "IP-Adresse:"
-Write-Host $ip "`n"
-Write-Host -ForegroundColor Yellow "Mac-Adresse:"
-Write-Host $mac "`n"
-Write-Host -ForegroundColor Yellow "Gateway:"
-Write-Host $gateway "`n"
-Write-Host -ForegroundColor Yellow  "Betriebssystem:"
-Write-Host $os "`n"
-Write-Host -ForegroundColor Yellow "Windows-Key:"
-Write-Host $WindowsKey "`n"
-write-host "`n"
-Write-Host "End of SL-Doc"
+Write-Host "-------------------------------------------"
+Write-Host -ForegroundColor Cyan "Zusammenfassung:"
+Write-Host "-------------------------------------------"
+Write-Host -ForegroundColor Yellow -NoNewline "Hostname:"
+Write-Host $hostname 
+Write-Host -ForegroundColor Yellow -NoNewline "Seriennummer:"
+Write-Host $serial 
+Write-Host -ForegroundColor Yellow -NoNewline "Modell:" 
+Write-Host $Modell 
+Write-Host -ForegroundColor Yellow -NoNewline "Installiert am:"
+Write-Host $installdate 
+Write-Host -ForegroundColor Yellow -NoNewline "IP-Adresse:"
+Write-Host $ip 
+Write-Host -ForegroundColor Yellow -NoNewline "Mac-Adresse:"
+Write-Host $mac 
+Write-Host -ForegroundColor Yellow -NoNewline "Gateway:"
+Write-Host $gateway 
+Write-Host -ForegroundColor Yellow  -NoNewline "Betriebssystem:"
+Write-Host $os 
+Write-Host -ForegroundColor Yellow -NoNewline "Windows-Key:"
+Write-Host $WindowsKey 
+Write-Host -ForegroundColor Cyan "End of SL-Doc"
 }
 
 function Cleanup{
