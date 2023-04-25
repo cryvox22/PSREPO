@@ -1,14 +1,21 @@
 function ModuleStarted{
+    Clear-Host
     Write-Host -ForegroundColor Cyan "-----Willkommen zur SLShell!-----"
     Write-Host ""
-    Write-Host -ForegroundColor Green "WICHTIG: Jede Funktion wird mit dem Präfix 'SL-' aufgerufen"
+    Write-Host -ForegroundColor Green "WICHTIG: Jede Funktion wird mit dem Praefix 'SL-' aufgerufen"
     Write-Host -ForegroundColor Green "-----------------------------------------------------------"
-    Write-Host -ForegroundColor Green "SL-Documentation - Gathert alle wichtigen Informationen zur Dokumentation in IT-Glue"
-
-
+    Write-Host -ForegroundColor Green "SL-Doc - Gathert alle wichtigen Informationen zur Dokumentation in IT-Glue"
+    Write-Host -ForegroundColor Green "SL-Cleanup - Bereinigt PCs und Server"
+    Write-Host -ForegroundColor Green "SL-Install - Installiert verschiedene Anwendungen"
+    Write-Host -ForegroundColor Green "SL-Remove - Deinstalliert verschiedene Anwendungen, Features etc."
+    Write-Host -ForegroundColor Green "SL-Netdoc - Tools zum Basic NetworkTroubleshooting"
+    Write-Host -ForegroundColor Green "SL-Connect - Baut Verbindungen zu verschiedenen CloudShells auf (M365, AzureAD, EXOnline, ServerEye)"
+    Write-Host -ForegroundColor Green "SL-Standard - Setzt Basic Settings für Clients und Server"
+    Write-Host -ForegroundColor Green "SL-SQL - Hilft bei der Informationsbeschaffung im SQL-Server"
+    Write-Host -ForegroundColor Green "SL-Deploy - Deployed verschiedene Services und Features VMs, DCs usw"
 }
 
-function Documentation{
+function Doc{
 #----------------------
 #Variablen: 
 #----------------------
@@ -19,7 +26,7 @@ function Documentation{
 Clear-Host
 
 write-host "`n"
-Write-Host "Willkommen beim GET-ITGlue-Information-Tool" 
+Write-Host "Welcome to SL-Doc" 
 Write-Host "-------------------------------------------"
 write-host "`n"
 Write-Host "Wir werden nacheinander alle benötigten Systemdaten auslesen und in Ihre Zwischenablage kopieren!" 
@@ -100,7 +107,7 @@ Write-Host "Installiert am: "
 Write-Host "-------------------------------------------"
 write-host "`n"
 write-host "`n"
-Write-Host -NoNewline "Das Gerät " $hostname " wurde am folgenden Tag installiert: "   
+Write-Host -NoNewline "Das Device " $hostname " wurde am folgenden Tag installiert: "   
         
 $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate ) 
       
@@ -158,7 +165,7 @@ Write-Host "-------------------------------------------"
 Write-Host "`n"
 Get-NetAdapter 
 
-$EthAdapterNumber = Read-Host "Wähle einen Adapter aus (1,2,3..)"
+$EthAdapterNumber = Read-Host "Suche einen Adapter aus (1,2,3..)"
 write-host "`n"
 
 $intEthAdapterNumber = [int]$EthAdapterNumber
@@ -269,15 +276,51 @@ Write-Host -ForegroundColor Yellow "Windows-Key:"
 Write-Host $WindowsKey "`n"
 
 write-host "`n"
-Write-Host "Vielen Dank für die Verwendung des GET-ITGlue-Information!"
+Write-Host "End of SL-Doc"
+
+}
+
+function Cleanup{
 
 }
 
 
+function Install{
+
+    Write-Host -ForegroundColor Green "Waehle die zu installierende Software aus!"
 
 
+}
+
+function Remove{
+    Write-Host  -ForegroundColor Green "Waehle die zu deinstallierende Software aus!"
+
+    function RemoveServerEye{
+
+    }
+}
 
 
+function Netdoc{
+    Write-Host -ForegroundColor Green "Waehle dein Netdoc-Tool aus!"
+}
+
+
+function Connect{
+    Write-Host -ForegroundColor Green "Wohin moechtest du dich connecten?"
+}
+
+function Standard{
+    Write-Host -ForegroundColor Green "Welche Standards willst du ausrollen?!"
+}
+
+function SQL{
+    Write-Host -ForegroundColor Green "Welche SQL-Daten brauchst du?"
+}
+
+function Deploy{
+    Write-Host -ForegroundColor Green "Was willst du deployen?"
+}
 
 
 
