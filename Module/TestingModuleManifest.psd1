@@ -31,6 +31,6 @@
     }
 
     #Prefix für alle Funktionen des Modules z.B. Get-GCAllKitkat
-    #DefaultcommandPrefix = 'G'
+    DefaultcommandPrefix = 'PG-'
 
 }
