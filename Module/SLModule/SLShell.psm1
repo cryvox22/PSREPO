@@ -61,7 +61,6 @@ write-host "`n"
 Write-Host "-------------------------------------------"
 Write-Host "Hostnamen: "
 Write-Host "-------------------------------------------"
-Write-Host "`n"
 $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
 $hostname | clip
 Write-Host -NoNewline "Der Hostname "
@@ -73,15 +72,11 @@ pause
 #----------------------
 #Seriennummer
 #----------------------
-write-host "`n"
 Write-Host "-------------------------------------------"
 Write-Host "Seriennummer: "
 Write-Host "-------------------------------------------"
 $serial = (Get-CimInstance -ClassName Win32_BIOS -Property SerialNumber).SerialNumber
 $serial | clip
-write-host "`n"
-Write-Host "Ihre Seriennummer wird ausgelesen..."
-write-host "`n"
 Write-Host -NoNewline "Die Seriennummer " 
 Write-Host -NoNewline -ForegroundColor Yellow $serial
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
@@ -92,17 +87,12 @@ pause
 #----------------------
 #Modell
 #----------------------
-write-host "`n"
 Write-Host "-------------------------------------------"
 Write-Host "Modell: "
 Write-Host "-------------------------------------------"
-write-host "`n"
 $system = Get-CimInstance CIM_ComputerSystem
 $Modell = $system.Model
 $Modell | clip
-write-host "`n"
-Write-Host "Ihr PC Modell wird ausgelesen..."
-write-host "`n"
 Write-Host -NoNewline "Das Modell:  " 
 Write-Host -NoNewline -ForegroundColor Yellow $Modell
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
@@ -112,16 +102,12 @@ pause
 #----------------------
 #Installiert am: 
 #----------------------
-write-host "`n"
 Write-Host "-------------------------------------------"
 Write-Host "Installiert am: "
 Write-Host "-------------------------------------------"
-write-host "`n"
-write-host "`n"
 Write-Host -NoNewline "Das Device " $hostname " wurde am folgenden Tag installiert: "   
 $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate ) 
 Write-Host -NoNewline -ForegroundColor Yellow $installdate
-write-host "`n"
 $installdate | clip
 Write-Host "Das Installationsdatum befindet sich jetzt in der Zwischenablage!"
 write-host "`n"
@@ -134,13 +120,13 @@ pause
 Write-Host "-------------------------------------------"
 Write-Host "Hostnamen: "
 Write-Host "-------------------------------------------"
-Write-Host "`n"
 $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
 $hostname | clip
 Write-Host -NoNewline "Der Hostname "
 Write-Host -NoNewline -ForegroundColor Yellow $hostname
 Write-Host " befindet sich jetzt in der Zwischenablage!"
 Write-Host "`n"
+pause
 
 #----------------------
 #IP-Addresse
@@ -148,7 +134,6 @@ Write-Host "`n"
 Write-Host "-------------------------------------------"
 Write-Host "IP-Addresse: "
 Write-Host "-------------------------------------------"
-Write-Host "`n"
 $ip =  (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias Ethernet).ipaddress
 $ip | clip
 Write-Host -NoNewline "Die IP-Addresse " 
@@ -165,7 +150,6 @@ pause
 Write-Host "-------------------------------------------"
 Write-Host "Mac-Addresse: "
 Write-Host "-------------------------------------------"
-Write-Host "`n"
 Get-NetAdapter 
 $EthAdapterNumber = Read-Host "Suche einen Adapter aus (1,2,3..)"
 write-host "`n"
@@ -195,7 +179,6 @@ pause
 Write-Host "-------------------------------------------"
 Write-Host "Gateway: "
 Write-Host "-------------------------------------------"
-write-host "`n"
 $gateway = Get-NetRoute -DestinationPrefix "0.0.0.0/0" | Select-Object -ExpandProperty "NextHop"
 $gateway | clip
 Write-Host -NoNewline "Das Gateway  " 
@@ -211,7 +194,6 @@ pause
 Write-Host "-------------------------------------------"
 Write-Host "Betriebssystem: "
 Write-Host "-------------------------------------------"
-write-host "`n"
 $os = (Get-WMIObject win32_operatingsystem).caption
 $os | clip
 Write-Host -NoNewline "Die Betriebssystemversion " 
@@ -227,15 +209,13 @@ pause
 Write-Host "-------------------------------------------"
 Write-Host "Windows-Key: "
 Write-Host "-------------------------------------------"
-Write-Host "`n"
 $WindowsKey = (Get-WmiObject SoftwareLicensingService).OA3xOriginalProductKey
 $WindowsKey | clip
 Write-Host -NoNewline "Der Windows-Key " 
 Write-Host -NoNewline -ForegroundColor Yellow $WindowsKey 
 Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-Write-Host "`n"
 pause
-write-host "`n"
+
 Clear-Host
 Write-Host -ForegroundColor Yellow "Zusammenfassung:"
 Write-Host -ForegroundColor Yellow "Hostname:"
