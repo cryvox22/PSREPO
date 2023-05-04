@@ -105,186 +105,100 @@ function Doc {
         param (
             [Parameter(Mandatory = $false)]
             [switch]
-            $Short
+            $Summary
 
 
 
         )
+    # Ausgabe "Hostname: " -nonewline
+    # Ausgabe (get-hostname) yellow
+
+    function Get-Hostname{
+        $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
+        $hostname | Set-Clipboard
+        return $hostname
+    }
+
+
+    function Get-Serial{
+        $serial = (Get-CimInstance -ClassName Win32_BIOS -Property SerialNumber).SerialNumber
+        $serial | Set-Clipboard
+        return $serial
+    }
     
+    function Get-Model{
+        $model = (Get-CimInstance CIM_ComputerSystem).Model 
+        $model | Set-Clipboard
+        return $model
+    }
 
-    Ausgabe "-------------------------------------------" Green
-    Ausgabe "Welcome to SL-Doc"  Cyan
-    Ausgabe "-------------------------------------------" Green
-    Ausgabe "Wir werden nacheinander alle relevanten Systemdaten auslesen und in Ihre Zwischenablage kopieren!" Yellow
-    Ausgabe "`n"
+    function Get-InstallDate{
+        $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate) 
+        $installdate | Set-Clipboard
+        return $installdate
+    }
+
+    function Get-IpAddress{
+        $ip = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias Ethernet).ipaddress
+        $ip | Set-Clipboard
+        return $ip
+    }
+
+
+    function Get-MacAddress{
+        $mac = Get-NetAdapter | Where-Object LinkSpeed -match "1* Gbps" | Where-Object Status -eq "Up" | Select-Object -ExpandProperty "MacAddress"
+        $mac | Set-Clipboard
+        return $mac
+    }
+
+
+    function Get-Gateway{
+        $gateway = Get-NetRoute -DestinationPrefix "0.0.0.0/0" | Select-Object -ExpandProperty "NextHop"
+        $gateway | Set-Clipboard
+        return $gateway
+    }
+
+    function Get-OS{
+        $os = (Get-WMIObject win32_operatingsystem).caption
+        $os | Set-Clipboard
+        return $os
+    }
+
+
 
     
-    #----------------------
-    #Hostname
-    #----------------------
-    Write-Host "-------------------------------------------"
-    Write-Host "Hostnamen: "
-    Write-Host "-------------------------------------------"
-    $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
-    $hostname | clip
-    Write-Host -NoNewline "Der Hostname "
-    Write-Host -NoNewline -ForegroundColor Yellow $hostname
-    Write-Host " befindet sich jetzt in der Zwischenablage!"
-    Read-Host
+    function Get-WindowsKey{
+        $WindowsKey = (Get-WmiObject SoftwareLicensingService).OA3xOriginalProductKey
+        $WindowsKey | Set-Clipboard
+        return $WindowsKey
+    }
 
-    #----------------------
-    #Seriennummer
-    #----------------------
-    Write-Host "-------------------------------------------"
-    Write-Host "Seriennummer: "
-    Write-Host "-------------------------------------------"
-    $serial = (Get-CimInstance -ClassName Win32_BIOS -Property SerialNumber).SerialNumber
-    $serial | clip
-    Write-Host -NoNewline "Die Seriennummer " 
-    Write-Host -NoNewline -ForegroundColor Yellow $serial
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    Read-Host
+    function Get-DocSummary{
+        Ausgabe "-------------------------------------------" Green
+        Ausgabe "Hostname: " -NoNewLine
+        Ausgabe  (Get-Hostname) Yellow 
+        Ausgabe "Seriennummer: " -NoNewLine
+        Ausgabe (get-serial) Yellow
+        Ausgabe "Modell: " -NoNewLine
+        Ausgabe (get-model) Yellow
+        Ausgabe "IP-Adresse: " -NoNewLine
+        Ausgabe (get-ipaddress) Yellow
+        Ausgabe "Mac-Adresse: " -NoNewLine
+        Ausgabe (get-MacAddress) Yellow
+        Ausgabe "Gateway: " -NoNewLine
+        Ausgabe (Get-gateway) -Yellow
+        Ausgabe "Betriebssystem: " -NoNewLine
+        Ausgabe (get-OS) Yellow
+        Ausgabe "Windows-Key: " -NoNewLine
+        Ausgabe (get-WindowsKey) Yellow
+        Ausgabe "-------------------------------------------" Green
+    }
 
-
-    #----------------------
-    #Modell
-    #----------------------
-    Write-Host "-------------------------------------------"
-    Write-Host "Modell: "
-    Write-Host "-------------------------------------------"
-    $system = Get-CimInstance CIM_ComputerSystem
-    $Modell = $system.Model
-    $Modell | clip
-    Write-Host -NoNewline "Das Modell:  " 
-    Write-Host -NoNewline -ForegroundColor Yellow $Modell
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    Read-Host
-
-    #----------------------
-    #Installiert am: 
-    #----------------------
-    Write-Host "-------------------------------------------"
-    Write-Host "Installiert am: "
-    Write-Host "-------------------------------------------"
-    Write-Host -NoNewline "Das Device " 
-    Write-Host -NoNewline -ForegroundColor Cyan $hostname
-    Write-Host -NoNewline " wurde am folgenden Tag installiert: "   
-    $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate ) 
-    Write-Host -NoNewline -ForegroundColor Yellow $installdate
-    $installdate | clip
-    Write-Host " Das Installationsdatum befindet sich jetzt in der Zwischenablage!"
-    Read-Host
-
-
-    #----------------------
-    #Hostname
-    #----------------------
-    Write-Host "-------------------------------------------"
-    Write-Host "Hostnamen: "
-    Write-Host "-------------------------------------------"
-    $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
-    $hostname | clip
-    Write-Host -NoNewline "Der Hostname "
-    Write-Host -NoNewline -ForegroundColor Yellow $hostname
-    Write-Host " befindet sich jetzt in der Zwischenablage!"
-    Read-Host
-
-    #----------------------
-    #IP-Addresse
-    #----------------------
-    Write-Host "-------------------------------------------"
-    Write-Host "IP-Addresse: "
-    Write-Host "-------------------------------------------"
-    $ip = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias Ethernet).ipaddress
-    $ip | clip
-    Write-Host -NoNewline "Die IP-Addresse " 
-    Write-Host -NoNewline -ForegroundColor Yellow $ip 
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    Read-Host
-
-
-
-    #----------------------
-    #Mac-Addresse
-    #----------------------
-    Write-Host "-------------------------------------------"
-    Write-Host "Mac-Addresse: "
-    Write-Host "-------------------------------------------"
-    #Get-NetAdapter | Where-Object LinkSpeed -match "1* Gbps" | Where-Object Status -eq "Up" | Select-Object Name, InterfaceDescription, MacAddress | Sort-Object Name | Out-String
+    if($summary){
+        Get-DocSummary
+    }
     
-    $mac = Get-NetAdapter | Where-Object LinkSpeed -match "1* Gbps" | Where-Object Status -eq "Up" | Select-Object -ExpandProperty "MacAddress"
-    Write-Host -NoNewline "Die Mac-Addresse " 
-    Write-Host -NoNewline -ForegroundColor Yellow $mac
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    Read-Host
-
-
-    #----------------------
-    #Gateway
-    #----------------------
-    Write-Host "-------------------------------------------"
-    Write-Host "Gateway: "
-    Write-Host "-------------------------------------------"
-    $gateway = Get-NetRoute -DestinationPrefix "0.0.0.0/0" | Select-Object -ExpandProperty "NextHop"
-    $gateway | clip
-    Write-Host -NoNewline "Das Gateway  " 
-    Write-Host -NoNewline -ForegroundColor Yellow $gateway 
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    Read-Host
-
-    #----------------------
-    #OS
-    #----------------------
-
-    Write-Host "-------------------------------------------"
-    Write-Host "Betriebssystem: "
-    Write-Host "-------------------------------------------"
-    $os = (Get-WMIObject win32_operatingsystem).caption
-    $os | clip
-    Write-Host -NoNewline "Die Betriebssystemversion " 
-    Write-Host -NoNewline -ForegroundColor Yellow $os 
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    Read-Host
-
-
-    #----------------------
-    #Windows-Key
-    #----------------------
-    Write-Host "-------------------------------------------"
-    Write-Host "Windows-Key: "
-    Write-Host "-------------------------------------------"
-    $WindowsKey = (Get-WmiObject SoftwareLicensingService).OA3xOriginalProductKey
-    $WindowsKey | clip
-    Write-Host -NoNewline "Der Windows-Key " 
-    Write-Host -NoNewline -ForegroundColor Yellow $WindowsKey 
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    Read-Host
-
-    Clear-Host
-    Write-Host "-------------------------------------------"
-    Write-Host -ForegroundColor Cyan "Zusammenfassung:"
-    Write-Host "-------------------------------------------"
-    Write-Host -ForegroundColor Yellow -NoNewline "Hostname:"
-    Write-Host $hostname 
-    Write-Host -ForegroundColor Yellow -NoNewline "Seriennummer:"
-    Write-Host $serial 
-    Write-Host -ForegroundColor Yellow -NoNewline "Modell:" 
-    Write-Host $Modell 
-    Write-Host -ForegroundColor Yellow -NoNewline "Installiert am:"
-    Write-Host $installdate 
-    Write-Host -ForegroundColor Yellow -NoNewline "IP-Adresse:"
-    Write-Host $ip 
-    Write-Host -ForegroundColor Yellow -NoNewline "Mac-Adresse:"
-    Write-Host $mac 
-    Write-Host -ForegroundColor Yellow -NoNewline "Gateway:"
-    Write-Host $gateway 
-    Write-Host -ForegroundColor Yellow  -NoNewline "Betriebssystem:"
-    Write-Host $os 
-    Write-Host -ForegroundColor Yellow -NoNewline "Windows-Key:"
-    Write-Host $WindowsKey 
-    Write-Host "-------------------------------------------"
-    Write-Host -ForegroundColor Cyan "End of SL-Doc"
-    Write-Host "-------------------------------------------"
+   
 }
 
 function Cleanup {
