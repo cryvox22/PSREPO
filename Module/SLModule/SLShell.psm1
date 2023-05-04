@@ -52,9 +52,6 @@ function Ausgabe{
 
 }
 
-
-
-
 function ModuleStarted {
     Clear-Host
     Ausgabe "---------------------------------" Red
@@ -83,163 +80,32 @@ function ModuleStarted {
     Ausgabe " - Deployed verschiedene Services und Features VMs, DCs usw." Green
 }
 
-
-#Start SL-Doc
 function Doc{
 #----------------------
 
 #Hostname
 
-function Get-Hostname{
-    Write-Host "-------------------------------------------"
-    Write-Host "Hostnamen: "
-    Write-Host "-------------------------------------------"
-    $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
-    $hostname | clip
-    Write-Host -NoNewline "Der Hostname "
-    Write-Host -NoNewline -ForegroundColor Yellow $hostname
-    Write-Host " befindet sich jetzt in der Zwischenablage!"
-    Write-Host "`n"
-    pause
-}
-#----------------------
 
-
-#----------------------
-#Seriennummer
-function Get-Serial{
-    Write-Host "-------------------------------------------"
-    Write-Host "Seriennummer: "
-    Write-Host "-------------------------------------------"
-    $serial = (Get-CimInstance -ClassName Win32_BIOS -Property SerialNumber).SerialNumber
-    $serial | clip
-    Write-Host -NoNewline "Die Seriennummer " 
-    Write-Host -NoNewline -ForegroundColor Yellow $serial
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    write-host "`n"
-    pause
-}
-#----------------------
 
 
 function Eingabe {
-    
         [CmdletBinding()]
         param (
             [Parameter(Position = 0, Mandatory = $true)]
             [string]
             $Text
         )
-
-
         Ausgabe -Text $Text": " -Farbe Green -NoNewLine
         $InputVar = Read-Host
-        
         return $InputVar
-    
-
-#----------------------
-#Modell
-function Get-Modell{
-    Write-Host "-------------------------------------------"
-    Write-Host "Modell: "
-    Write-Host "-------------------------------------------"
-    $system = Get-CimInstance CIM_ComputerSystem
-    $Modell = $system.Model
-    $Modell | clip
-    Write-Host -NoNewline "Das Modell:  " 
-    Write-Host -NoNewline -ForegroundColor Yellow $Modell
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    write-host "`n"
-    pause
 }
-#----------------------
 
-
-#----------------------
-#Installiert am: 
-function Get-InstallDate{
-    Write-Host "-------------------------------------------"
-    Write-Host "Installiert am: "
-    Write-Host "-------------------------------------------"
-    Write-Host -NoNewline "Das Device " $hostname " wurde am folgenden Tag installiert: "   
-    $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate ) 
-    Write-Host -NoNewline -ForegroundColor Yellow $installdate
-    $installdate | clip
-    Write-Host "Das Installationsdatum befindet sich jetzt in der Zwischenablage!"
-    write-host "`n"
-    pause
-}
-#----------------------
-
-
-#----------------------
-#IP-Addresse
-function Get-IPAddress{
-    Write-Host "-------------------------------------------"
-    Write-Host "IP-Addresse: "
-    Write-Host "-------------------------------------------"
-    $ip =  (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias Ethernet).ipaddress
-    $ip | clip
-    Write-Host -NoNewline "Die IP-Addresse " 
-    Write-Host -NoNewline -ForegroundColor Yellow $ip 
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    Write-Host "`n"
-    pause
-}
-#----------------------
-
-
-
-
-#----------------------
-#Mac-Addresse
-function Get-MacAddress{
-    Write-Host "-------------------------------------------"
-    Write-Host "Mac-Addresse: "
-    Write-Host "-------------------------------------------"
-
-    Get-NetAdapter | Sort-Object Name -Descending | Select-Object Name, InterfaceDescription, MacAddress | Write-Output
-    
-    
-
-        $EthAdapterNumber = Read-Host "Suche einen Adapter aus (1,2,3..)"
-        Write-host "`n"
-        $intEthAdapterNumber = [int]$EthAdapterNumber
-        $intEthAdapterNumber = $intEthAdapterNumber-1
-        $AdapterName = "Ethernet" +$intEthAdapterNumber
-        if($intEthAdapterNumber-eq 0)
-        {
-        $mac =  (Get-NetAdapter -Name Ethernet).macaddress
-        $mac | clip
-        }
-        else
-        {
-        $mac =  (Get-NetAdapter -Name Ethernet + $intEthAdapterNumber).macaddress
-        $mac | clip
-        }
-    
-    
-    
-
-    Write-Host -NoNewline "Die Mac-Addresse " 
-    Write-Host -NoNewline -ForegroundColor Yellow $mac
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    write-host "`n"
-    pause
-}
-#----------------------
-
-        )
-    # Ausgabe "Hostname: " -nonewline
-    # Ausgabe (get-hostname) yellow
 
     function Get-Hostname{
         $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
         $hostname | Set-Clipboard
         return $hostname
     }
-
 
     function Get-Serial{
         $serial = (Get-CimInstance -ClassName Win32_BIOS -Property SerialNumber).SerialNumber
@@ -265,13 +131,11 @@ function Get-MacAddress{
         return $ip
     }
 
-
     function Get-MacAddress{
         $mac = Get-NetAdapter | Where-Object LinkSpeed -match "1* Gbps" | Where-Object Status -eq "Up" | Select-Object -ExpandProperty "MacAddress"
         $mac | Set-Clipboard
         return $mac
     }
-
 
     function Get-Gateway{
         $gateway = Get-NetRoute -DestinationPrefix "0.0.0.0/0" | Select-Object -ExpandProperty "NextHop"
@@ -284,9 +148,6 @@ function Get-MacAddress{
         $os | Set-Clipboard
         return $os
     }
-
-
-
     
     function Get-WindowsKey{
         $WindowsKey = (Get-WmiObject SoftwareLicensingService).OA3xOriginalProductKey
@@ -315,34 +176,11 @@ function Get-MacAddress{
         Ausgabe "-------------------------------------------" Green
     }
 
-Clear-Host
-Write-Host -ForegroundColor Yellow "Zusammenfassung:"
-Write-Host -ForegroundColor Yellow "Hostname:"
-Write-Host $hostname "`n"
-Write-Host -ForegroundColor Yellow "Seriennummer:"
-Write-Host $serial "`n"
-Write-Host -ForegroundColor Yellow "Modell:" 
-Write-Host $Modell "`n"
-Write-Host -ForegroundColor Yellow "Installiert am:"
-Write-Host $installdate "`n"
-Write-Host -ForegroundColor Yellow "IP-Adresse:"
-Write-Host $ip "`n"
-Write-Host -ForegroundColor Yellow "Mac-Adresse:"
-Write-Host $mac "`n"
-Write-Host -ForegroundColor Yellow "Gateway:"
-Write-Host $gateway "`n"
-Write-Host -ForegroundColor Yellow  "Betriebssystem:"
-Write-Host $os "`n"
-Write-Host -ForegroundColor Yellow "Windows-Key:"
-Write-Host $WindowsKey "`n"
-write-host "`n"
-Write-Host "End of SL-Doc"
 }
 
 function Cleanup{
 
 }
-
 
 function Install {
 
@@ -359,11 +197,9 @@ function Remove {
     }
 }
 
-
 function Netdoc {
     Write-Host -ForegroundColor Green "Waehle dein Netdoc-Tool aus!"
 }
-
 
 function Connect {
     Write-Host -ForegroundColor Green "Wohin moechtest du dich connecten?"
@@ -380,10 +216,6 @@ function SQL {
 function Deploy {
     Write-Host -ForegroundColor Green "Was willst du deployen?"
 }
-
-
-
-
 
 ModuleStarted
 
