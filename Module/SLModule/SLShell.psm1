@@ -143,20 +143,9 @@ function Doc {
     Write-Host "-------------------------------------------"
     Write-Host "Mac-Addresse: "
     Write-Host "-------------------------------------------"
-    Get-NetAdapter | Select-Object Name, InterfaceDescription, MacAddress | Sort-Object Name  
-    $EthAdapterNumber = Read-Host "Suche einen Adapter aus (1,2,3..)"
-    write-host "`n"
-    $intEthAdapterNumber = [int]$EthAdapterNumber
-    $intEthAdapterNumber = $intEthAdapterNumber - 1
-    $AdapterName = "Ethernet" + $intEthAdapterNumber
-    if ($intEthAdapterNumber -eq 0) {
-        $mac = (Get-NetAdapter -Name Ethernet).macaddress
-        $mac | clip
-    }
-    else {
-        $mac = (Get-NetAdapter -Name Ethernet + $intEthAdapterNumber).macaddress
-        $mac | clip
-    }
+    #Get-NetAdapter | Where-Object LinkSpeed -match "1* Gbps" | Where-Object Status -eq "Up" | Select-Object Name, InterfaceDescription, MacAddress | Sort-Object Name | Out-String
+    
+    $mac = Get-NetAdapter | Where-Object LinkSpeed -match "1* Gbps" | Where-Object Status -eq "Up" | Select-Object -ExpandProperty "MacAddress"
     Write-Host -NoNewline "Die Mac-Addresse " 
     Write-Host -NoNewline -ForegroundColor Yellow $mac
     Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
@@ -226,7 +215,9 @@ function Doc {
     Write-Host $os 
     Write-Host -ForegroundColor Yellow -NoNewline "Windows-Key:"
     Write-Host $WindowsKey 
+    Write-Host "-------------------------------------------"
     Write-Host -ForegroundColor Cyan "End of SL-Doc"
+    Write-Host "-------------------------------------------"
 }
 
 function Cleanup {
@@ -272,7 +263,7 @@ function Deploy {
 }
 
 
-
+<#
 function Write{
     [CmdletBinding()]
     param(
@@ -295,7 +286,7 @@ function Write{
     Write-Host $Text -ForegroundColor $Farbe
 
 }
-
+#>
 
 ModuleStarted
 
