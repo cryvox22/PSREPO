@@ -18,40 +18,107 @@ SL-Doc:
 
 #>
 
+function Ausgabe{
+    [CmdletBinding()]
+    param(
+
+        [Parameter(Position = 0, Mandatory = $true)]
+        [string]
+        $Text,
+
+
+        # Farbe
+        [Parameter(Position =  1, Mandatory = $false)]
+        [ValidateSet('Green','Red','Cyan','Yellow','White','Blue','Magenta')]
+        [String]
+        $Farbe = "White",
+
+        [Parameter(Position = 2, Mandatory = $false)]
+        [switch]
+        $NoNewLine
+    )
+
+ 
+        
+    if($NoNewLine){
+        Write-Host -Object $Text -ForegroundColor $Farbe -NoNewline
+    }else{
+        Write-Host -Object $Text -ForegroundColor $Farbe
+    }
+    
+
+}
 
 
 
 
 function ModuleStarted {
     Clear-Host
-    Write-Host -ForegroundColor Cyan "-----Willkommen zur SLShell!-----"
-    Write-Host ""
-    Write-Host -ForegroundColor Green "WICHTIG: Jede Funktion wird mit dem Praefix 'SL-' aufgerufen"
-    Write-Host -ForegroundColor Green "-----------------------------------------------------------"
-    Write-Host -ForegroundColor Green "SL-Doc - Gathert alle wichtigen Informationen zur Dokumentation in IT-Glue"
-    Write-Host -ForegroundColor Green "SL-Cleanup - Bereinigt PCs und Server"
-    Write-Host -ForegroundColor Green "SL-Install - Installiert verschiedene Anwendungen"
-    Write-Host -ForegroundColor Green "SL-Remove - Deinstalliert verschiedene Anwendungen, Features etc."
-    Write-Host -ForegroundColor Green "SL-Netdoc - Tools zum Basic NetworkTroubleshooting"
-    Write-Host -ForegroundColor Green "SL-Connect - Baut Verbindungen zu verschiedenen CloudShells auf (M365, AzureAD, EXOnline, ServerEye)"
-    Write-Host -ForegroundColor Green "SL-Standard - Setzt Basic Settings fuer Clients und Server"
-    Write-Host -ForegroundColor Green "SL-SQL - Hilft bei der Informationsbeschaffung im SQL-Server"
-    Write-Host -ForegroundColor Green "SL-Deploy - Deployed verschiedene Services und Features VMs, DCs usw"
+    Ausgabe "---------------------------------" Red
+    Ausgabe "-----Willkommen zur SLShell!-----" Red
+    Ausgabe "---------------------------------" Red
+    Ausgabe " "
+    Ausgabe "WICHTIG: Jede Funktion wird mit dem Praefix 'SL-' aufgerufen" Green
+    Ausgabe "-----------------------------------------------------------" Green
+    Ausgabe "SL-Doc" Cyan -NoNewLine
+    Ausgabe " - Gathert alle wichtigen Informationen zur Dokumentation in IT-Glue" Green
+    Ausgabe "SL-Cleanup" Cyan -NoNewLine 
+    Ausgabe " - Bereinigt PCs und Server" Green
+    Ausgabe "SL-Install" Cyan -NoNewLine
+    Ausgabe " - Installiert verschiedene Anwendungen" Green
+    Ausgabe "SL-Remove" Cyan -NoNewLine
+    Ausgabe " - Deinstalliert verschiedene Anwendungen, Features etc." Green
+    Ausgabe "SL-Netdoc" Cyan -NoNewLine
+    Ausgabe " - Tolls fuer Basic NetzwerkTroubleshooting" Green
+    Ausgabe "SL-Connect" Cyan -NoNewLine 
+    Ausgabe " - Baut Verbindungen zu verschiedenen CloudShells auf (M365, AzureAD, ExOnline, Servereye, Datto etc.)" Green
+    Ausgabe "SL-Standard" Cyan -NoNewLine
+    Ausgabe " - Setzt Basic Settings fuer Clients und Server" Green
+    Ausgabe "SL-SQL" Cyan -NoNewLine
+    Ausgabe " - Hilft bei der Informationsbeschaffung im SQL-Server" Green
+    Ausgabe "SL-Deploy" Cyan -NoNewLine
+    Ausgabe " - Deployed verschiedene Services und Features VMs, DCs usw." Green
+}
+
+function Eingabe {
+    
+        [CmdletBinding()]
+        param (
+            [Parameter(Position = 0, Mandatory = $true)]
+            [string]
+            $Text
+        )
+
+
+        Ausgabe -Text $Text": " -Farbe Green -NoNewLine
+        $InputVar = Read-Host
+        
+        return $InputVar
+    
+
 }
 
 function Doc {
 
-    [CmdletBinding()]
-    param (
-    )
+    
+        [CmdletBinding()]
+        param (
+            [Parameter(Mandatory = $false)]
+            [switch]
+            $Short
 
 
-    Write-Host "-------------------------------------------"
-    Write-Host -ForegroundColor Cyan "Welcome to SL-Doc" 
-    Write-Host "-------------------------------------------"
-    Write-Host -ForegroundColor Yellow "Wir werden nacheinander alle relevanten Systemdaten auslesen und in Ihre Zwischenablage kopieren!" 
-    write-host "`n"
 
+        )
+    
+
+    Ausgabe "-------------------------------------------" Green
+    Ausgabe "Welcome to SL-Doc"  Cyan
+    Ausgabe "-------------------------------------------" Green
+    Ausgabe "Wir werden nacheinander alle relevanten Systemdaten auslesen und in Ihre Zwischenablage kopieren!" Yellow
+    Ausgabe "`n"
+
+    
     #----------------------
     #Hostname
     #----------------------
@@ -263,30 +330,8 @@ function Deploy {
 }
 
 
-<#
-function Write{
-    [CmdletBinding()]
-    param(
-
-        [Parameter(
-            Position = 0,
-            Mandatory = $true
-        )]
-        [string]
-        $Text
 
 
-        # Farbe
-        [Parameter(Position =  1)]
-        [String]
-        $Farbe = "white"
-    )
-
-
-    Write-Host $Text -ForegroundColor $Farbe
-
-}
-#>
 
 ModuleStarted
 
