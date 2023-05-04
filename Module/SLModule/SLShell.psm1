@@ -21,25 +21,66 @@ Allgemein:
 
 #>
 
+function Ausgabe{
+    [CmdletBinding()]
+    param(
+
+        [Parameter(Position = 0, Mandatory = $true)]
+        [string]
+        $Text,
+
+
+        # Farbe
+        [Parameter(Position =  1, Mandatory = $false)]
+        [ValidateSet('Green','Red','Cyan','Yellow','White','Blue','Magenta')]
+        [String]
+        $Farbe = "White",
+
+        [Parameter(Position = 2, Mandatory = $false)]
+        [switch]
+        $NoNewLine
+    )
+
+ 
+        
+    if($NoNewLine){
+        Write-Host -Object $Text -ForegroundColor $Farbe -NoNewline
+    }else{
+        Write-Host -Object $Text -ForegroundColor $Farbe
+    }
+    
+
+}
 
 
 
 
-function ModuleStarted{
+function ModuleStarted {
     Clear-Host
-    Write-Host -ForegroundColor Cyan "-----Willkommen zur SLShell!-----"
-    Write-Host ""
-    Write-Host -ForegroundColor Green "WICHTIG: Jede Funktion wird mit dem Praefix 'SL-' aufgerufen"
-    Write-Host -ForegroundColor Green "-----------------------------------------------------------"
-    Write-Host -ForegroundColor Green "SL-Doc - Gathert alle wichtigen Informationen zur Dokumentation in IT-Glue"
-    Write-Host -ForegroundColor Green "SL-Cleanup - Bereinigt PCs und Server"
-    Write-Host -ForegroundColor Green "SL-Install - Installiert verschiedene Anwendungen"
-    Write-Host -ForegroundColor Green "SL-Remove - Deinstalliert verschiedene Anwendungen, Features etc."
-    Write-Host -ForegroundColor Green "SL-Netdoc - Tools zum Basic NetworkTroubleshooting"
-    Write-Host -ForegroundColor Green "SL-Connect - Baut Verbindungen zu verschiedenen CloudShells auf (M365, AzureAD, EXOnline, ServerEye)"
-    Write-Host -ForegroundColor Green "SL-Standard - Setzt Basic Settings fuer Clients und Server"
-    Write-Host -ForegroundColor Green "SL-SQL - Hilft bei der Informationsbeschaffung im SQL-Server"
-    Write-Host -ForegroundColor Green "SL-Deploy - Deployed verschiedene Services und Features VMs, DCs usw"
+    Ausgabe "---------------------------------" Red
+    Ausgabe "-----Willkommen zur SLShell!-----" Red
+    Ausgabe "---------------------------------" Red
+    Ausgabe " "
+    Ausgabe "WICHTIG: Jede Funktion wird mit dem Praefix 'SL-' aufgerufen" Green
+    Ausgabe "-----------------------------------------------------------" Green
+    Ausgabe "SL-Doc" Cyan -NoNewLine
+    Ausgabe " - Gathert alle wichtigen Informationen zur Dokumentation in IT-Glue" Green
+    Ausgabe "SL-Cleanup" Cyan -NoNewLine 
+    Ausgabe " - Bereinigt PCs und Server" Green
+    Ausgabe "SL-Install" Cyan -NoNewLine
+    Ausgabe " - Installiert verschiedene Anwendungen" Green
+    Ausgabe "SL-Remove" Cyan -NoNewLine
+    Ausgabe " - Deinstalliert verschiedene Anwendungen, Features etc." Green
+    Ausgabe "SL-Netdoc" Cyan -NoNewLine
+    Ausgabe " - Tolls fuer Basic NetzwerkTroubleshooting" Green
+    Ausgabe "SL-Connect" Cyan -NoNewLine 
+    Ausgabe " - Baut Verbindungen zu verschiedenen CloudShells auf (M365, AzureAD, ExOnline, Servereye, Datto etc.)" Green
+    Ausgabe "SL-Standard" Cyan -NoNewLine
+    Ausgabe " - Setzt Basic Settings fuer Clients und Server" Green
+    Ausgabe "SL-SQL" Cyan -NoNewLine
+    Ausgabe " - Hilft bei der Informationsbeschaffung im SQL-Server" Green
+    Ausgabe "SL-Deploy" Cyan -NoNewLine
+    Ausgabe " - Deployed verschiedene Services und Features VMs, DCs usw." Green
 }
 
 
@@ -81,6 +122,21 @@ function Get-Serial{
 #----------------------
 
 
+function Eingabe {
+    
+        [CmdletBinding()]
+        param (
+            [Parameter(Position = 0, Mandatory = $true)]
+            [string]
+            $Text
+        )
+
+
+        Ausgabe -Text $Text": " -Farbe Green -NoNewLine
+        $InputVar = Read-Host
+        
+        return $InputVar
+    
 
 #----------------------
 #Modell
@@ -174,158 +230,154 @@ function Get-MacAddress{
 }
 #----------------------
 
+        )
+    # Ausgabe "Hostname: " -nonewline
+    # Ausgabe (get-hostname) yellow
+
+    function Get-Hostname{
+        $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
+        $hostname | Set-Clipboard
+        return $hostname
+    }
 
 
-#----------------------
-#Gateway
-function Get-Gateway{
-    Write-Host "-------------------------------------------"
-    Write-Host "Gateway: "
-    Write-Host "-------------------------------------------"
-    $gateway = Get-NetRoute -DestinationPrefix "0.0.0.0/0" | Select-Object -ExpandProperty "NextHop"
-    $gateway | clip
-    Write-Host -NoNewline "Das Gateway  " 
-    Write-Host -NoNewline -ForegroundColor Yellow $gateway 
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    write-host "`n"
-    pause
-}
-#----------------------
-
-
-#----------------------
-#OS
-function Get-OS{
-    Write-Host "-------------------------------------------"
-    Write-Host "Betriebssystem: "
-    Write-Host "-------------------------------------------"
-    $os = (Get-WMIObject win32_operatingsystem).caption
-    $os | clip
-    Write-Host -NoNewline "Die Betriebssystemversion " 
-    Write-Host -NoNewline -ForegroundColor Yellow $os 
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    write-host "`n"
-    pause
+    function Get-Serial{
+        $serial = (Get-CimInstance -ClassName Win32_BIOS -Property SerialNumber).SerialNumber
+        $serial | Set-Clipboard
+        return $serial
+    }
     
-}
-#----------------------
+    function Get-Model{
+        $model = (Get-CimInstance CIM_ComputerSystem).Model 
+        $model | Set-Clipboard
+        return $model
+    }
+
+    function Get-InstallDate{
+        $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate) 
+        $installdate | Set-Clipboard
+        return $installdate
+    }
+
+    function Get-IpAddress{
+        $ip = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias Ethernet).ipaddress
+        $ip | Set-Clipboard
+        return $ip
+    }
+
+
+    function Get-MacAddress{
+        $mac = Get-NetAdapter | Where-Object LinkSpeed -match "1* Gbps" | Where-Object Status -eq "Up" | Select-Object -ExpandProperty "MacAddress"
+        $mac | Set-Clipboard
+        return $mac
+    }
+
+
+    function Get-Gateway{
+        $gateway = Get-NetRoute -DestinationPrefix "0.0.0.0/0" | Select-Object -ExpandProperty "NextHop"
+        $gateway | Set-Clipboard
+        return $gateway
+    }
+
+    function Get-OS{
+        $os = (Get-WMIObject win32_operatingsystem).caption
+        $os | Set-Clipboard
+        return $os
+    }
 
 
 
-#----------------------
-#Windows-Key
-function Get-WindowsKey{
-    param(
-        $WindowsKey
-    )
-    Write-Host "-------------------------------------------"
-    Write-Host "Windows-Key: "
-    Write-Host "-------------------------------------------"
-    $WindowsKey = (Get-WmiObject SoftwareLicensingService).OA3xOriginalProductKey
-    $WindowsKey | clip
-    Write-Host -NoNewline "Der Windows-Key " 
-    Write-Host -NoNewline -ForegroundColor Yellow $WindowsKey 
-    Write-Host " befindet sich jetzt in Ihrer Zwischenablage!"
-    pause
-}
-#----------------------
+    
+    function Get-WindowsKey{
+        $WindowsKey = (Get-WmiObject SoftwareLicensingService).OA3xOriginalProductKey
+        $WindowsKey | Set-Clipboard
+        return $WindowsKey
+    }
 
-
-#----------------------
-#Zusammenfassung
-function Get-Summary{
-    Clear-Host
-    Write-Host -ForegroundColor Yellow "Zusammenfassung:"
-    Write-Host -ForegroundColor Yellow "Hostname:"
-    Write-Host $hostname 
-    Write-Host -ForegroundColor Yellow "Seriennummer:"
-    Write-Host $serial 
-    Write-Host -ForegroundColor Yellow "Modell:" 
-    Write-Host $Modell 
-    Write-Host -ForegroundColor Yellow "Installiert am:"
-    Write-Host $installdate 
-    Write-Host -ForegroundColor Yellow "IP-Adresse:"
-    Write-Host $ip 
-    Write-Host -ForegroundColor Yellow "Mac-Adresse:"
-    Write-Host $mac 
-    Write-Host -ForegroundColor Yellow "Gateway:"
-    Write-Host $gateway 
-    Write-Host -ForegroundColor Yellow  "Betriebssystem:"
-    Write-Host $os 
-    Write-Host -ForegroundColor Yellow "Windows-Key:"
-    Write-Host $WindowsKey 
-    Write-Host "End of SL-Doc"
-}
-#----------------------
-
+    function Get-DocSummary{
+        Ausgabe "-------------------------------------------" Green
+        Ausgabe "Hostname: " -NoNewLine
+        Ausgabe  (Get-Hostname) Yellow 
+        Ausgabe "Seriennummer: " -NoNewLine
+        Ausgabe (get-serial) Yellow
+        Ausgabe "Modell: " -NoNewLine
+        Ausgabe (get-model) Yellow
+        Ausgabe "IP-Adresse: " -NoNewLine
+        Ausgabe (get-ipaddress) Yellow
+        Ausgabe "Mac-Adresse: " -NoNewLine
+        Ausgabe (get-MacAddress) Yellow
+        Ausgabe "Gateway: " -NoNewLine
+        Ausgabe (Get-gateway) -Yellow
+        Ausgabe "Betriebssystem: " -NoNewLine
+        Ausgabe (get-OS) Yellow
+        Ausgabe "Windows-Key: " -NoNewLine
+        Ausgabe (get-WindowsKey) Yellow
+        Ausgabe "-------------------------------------------" Green
+    }
 
 Clear-Host
-
+Write-Host -ForegroundColor Yellow "Zusammenfassung:"
+Write-Host -ForegroundColor Yellow "Hostname:"
+Write-Host $hostname "`n"
+Write-Host -ForegroundColor Yellow "Seriennummer:"
+Write-Host $serial "`n"
+Write-Host -ForegroundColor Yellow "Modell:" 
+Write-Host $Modell "`n"
+Write-Host -ForegroundColor Yellow "Installiert am:"
+Write-Host $installdate "`n"
+Write-Host -ForegroundColor Yellow "IP-Adresse:"
+Write-Host $ip "`n"
+Write-Host -ForegroundColor Yellow "Mac-Adresse:"
+Write-Host $mac "`n"
+Write-Host -ForegroundColor Yellow "Gateway:"
+Write-Host $gateway "`n"
+Write-Host -ForegroundColor Yellow  "Betriebssystem:"
+Write-Host $os "`n"
+Write-Host -ForegroundColor Yellow "Windows-Key:"
+Write-Host $WindowsKey "`n"
 write-host "`n"
-Write-Host "Welcome to SL-Doc" 
-Write-Host "-------------------------------------------"
-Write-Host "Wir werden nacheinander alle relevanten Systemdaten auslesen und in Ihre Zwischenablage kopieren!" 
-write-host "`n"
-
-Get-Hostname
-Get-Serial
-Get-Modell
-Get-InstallDate
-Get-IPAddress
-Get-MacAddress
-Get-Gateway
-Get-OS
-Get-WindowsKey
-Get-Summary
-
-
-}#Ende SL-Doc
-
-
-
-
-
-
+Write-Host "End of SL-Doc"
+}
 
 function Cleanup{
 
 }
 
 
-function Install{
+function Install {
 
     Write-Host -ForegroundColor Green "Waehle die zu installierende Software aus!"
 
 
 }
 
-function Remove{
+function Remove {
     Write-Host  -ForegroundColor Green "Waehle die zu deinstallierende Software aus!"
 
-    function RemoveServerEye{
+    function RemoveServerEye {
 
     }
 }
 
 
-function Netdoc{
+function Netdoc {
     Write-Host -ForegroundColor Green "Waehle dein Netdoc-Tool aus!"
 }
 
 
-function Connect{
+function Connect {
     Write-Host -ForegroundColor Green "Wohin moechtest du dich connecten?"
 }
 
-function Standard{
+function Standard {
     Write-Host -ForegroundColor Green "Welche Standards willst du ausrollen?!"
 }
 
-function SQL{
+function SQL {
     Write-Host -ForegroundColor Green "Welche SQL-Daten brauchst du?"
 }
 
-function Deploy{
+function Deploy {
     Write-Host -ForegroundColor Green "Was willst du deployen?"
 }
 
@@ -333,5 +385,7 @@ function Deploy{
 
 
 
-
 ModuleStarted
+
+
+
