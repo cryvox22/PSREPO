@@ -80,6 +80,19 @@ function ModuleStarted {
     Ausgabe " - Deployed verschiedene Services und Features VMs, DCs usw." Green
 }
 
+
+
+function Eingabe {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0, Mandatory = $true)]
+        [string]
+        $Text
+    )
+    Ausgabe -Text $Text": " -Farbe Green -NoNewLine
+    $InputVar = Read-Host
+    return $InputVar
+}
 function Doc{
 #----------------------
 
@@ -88,17 +101,7 @@ function Doc{
 
 
 
-function Eingabe {
-        [CmdletBinding()]
-        param (
-            [Parameter(Position = 0, Mandatory = $true)]
-            [string]
-            $Text
-        )
-        Ausgabe -Text $Text": " -Farbe Green -NoNewLine
-        $InputVar = Read-Host
-        return $InputVar
-}
+
 
 
     function Get-Hostname{
