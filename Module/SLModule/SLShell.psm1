@@ -236,14 +236,6 @@ function Deploy {
 
 
 
-function Verb-Noun {
-    [CmdletBinding()]
-    param (
-        
-    )
-    
-   
-
 ModuleStarted
 
 
