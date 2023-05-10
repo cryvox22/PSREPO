@@ -84,18 +84,16 @@ function ModuleStarted {
 
 <#
 .SYNOPSIS
-    A short one-line action-based description, e.g. 'Tests if a function is valid'
+    Hier könnte deine Beschreibung stehen
 .DESCRIPTION
-    A longer description of the function, its purpose, common use cases, etc.
+    Diese Funktion regelt eine Eingabe
 .NOTES
-    Information or caveats about the function e.g. 'This function is not supported in Linux'
+    Fehler sind beinhaltet
 .LINK
-    Specify a URI to a help page, this will show when Get-Help -Online is used.
+    https://dieseurlgibtesnicht
 .EXAMPLE
     SL-Eingabe "Das ist mein Text" Red -NoNewLine
 #>
-
-
 function Eingabe {
     [CmdletBinding()]
     param (
