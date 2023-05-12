@@ -7,21 +7,22 @@ Eigene Read- und Write-Function schreiben, die in den Untermodulen verwendet wer
 ToDo's für die Untermodule: 
 
 SL-Doc: 
-- alle Teilbereiche in eigene Functions auslagern
-- Ausgabe und Zusammenfassung verbessern
 - Systemspecs mit auslesen
-- Get-Mac anpassen
-- einzelne Teilinformationen via. Befehl abrufbar machen (z.B. SL-Doc -Value "Serial" -> gibt Seriennummer aus und schiebt sie ins Clipboard)
-
+- Copy als zusatzbefehl angeben
+- Teilinformationen abrufbar -> erledigt
+- Get-Mac anpassen -> erleidgt
+- alle Teilbereiche in eigene Functions auslagern -> erledigt
+- Ausgabe und Zusammenfassung verbessern -> erledigt
 
 Allgemein: 
-- Cmdlet für Read und Write-Host erstellen
+- Cmdlet für Read und Write-Host erstellen -> erledigt
 - Cmdlet für Export erstellen
 
 
 #>
 
-function Ausgabe{
+#Funktion für vereinfachte Ausgabe mit verkürzter Syntax
+function Ausgabe {
     [CmdletBinding()]
     param(
 
@@ -31,8 +32,8 @@ function Ausgabe{
 
 
         # Farbe
-        [Parameter(Position =  1, Mandatory = $false)]
-        [ValidateSet('Green','Red','Cyan','Yellow','White','Blue','Magenta')]
+        [Parameter(Position = 1, Mandatory = $false)]
+        [ValidateSet('Green', 'Red', 'Cyan', 'Yellow', 'White', 'Blue', 'Magenta')]
         [String]
         $Farbe = "White",
 
@@ -43,15 +44,39 @@ function Ausgabe{
 
  
         
-    if($NoNewLine){
+    if ($NoNewLine) {
         Write-Host -Object $Text -ForegroundColor $Farbe -NoNewline
-    }else{
+    }
+    else {
         Write-Host -Object $Text -ForegroundColor $Farbe
     }
     
 
 }
 
+#Funktionen für allgemeine Eingabe
+function Eingabe {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0, Mandatory = $true)]
+        [string]
+        $Text
+    )
+    Ausgabe -Text $Text": " -Farbe Green -NoNewLine
+    $InputVar = Read-Host
+    return $InputVar
+}
+
+#Vereinfachter Export von Daten
+function ExportData {
+    [CmdletBinding()]
+    param (
+        
+    )
+    
+}
+
+#Willkommenstext wird ausgegeben, in dem die allgemeinen Teilmodule aufgelistet und erklärt werden
 function ModuleStarted {
     Clear-Host
     Ausgabe "---------------------------------" Red
@@ -105,72 +130,77 @@ function Eingabe {
     $InputVar = Read-Host
     return $InputVar
 }
-function Doc{
-#----------------------
-
-#Hostname
 
 
+function Doc {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0, Mandatory = $false)]
+        [ValidateSet('Hostname', 'Serial', 'Model', 'InstallDate', 'IpAddress','MacAddress','Gateway','OS','Windowskey','Summary')]
+        [string]
+        $Value,
 
-
-
-
-
-    function Get-Hostname{
+        [Parameter(Position = 1, Mandatory = $false)]
+        [switch]
+        $Copy
+    )
+   
+    #Hostname wird ausgelesen
+    function Get-Hostname {
         $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
-        $hostname | Set-Clipboard
         return $hostname
     }
 
-    function Get-Serial{
+    #Seriennummer wird ausgelsen
+    function Get-Serial {
         $serial = (Get-CimInstance -ClassName Win32_BIOS -Property SerialNumber).SerialNumber
-        $serial | Set-Clipboard
         return $serial
     }
     
-    function Get-Model{
+    #Modell wird ausgelsen
+    function Get-Model {
         $model = (Get-CimInstance CIM_ComputerSystem).Model 
-        $model | Set-Clipboard
         return $model
     }
 
-    function Get-InstallDate{
-        $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate) 
-        $installdate | Set-Clipboard
+    #Installations-Datum wird ausgelsen
+    function Get-InstallDate {
+        $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate ) 
         return $installdate
     }
 
-    function Get-IpAddress{
+    #IP-Adresse wird ausgelesen
+    function Get-IpAddress {
         $ip = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias Ethernet).ipaddress
-        $ip | Set-Clipboard
         return $ip
     }
 
-    function Get-MacAddress{
+    #Mac-Addresse wird ausgelesen
+    function Get-MacAddress {
         $mac = Get-NetAdapter | Where-Object LinkSpeed -match "1* Gbps" | Where-Object Status -eq "Up" | Select-Object -ExpandProperty "MacAddress"
-        $mac | Set-Clipboard
         return $mac
     }
 
-    function Get-Gateway{
+    #Gateway-Addresse wird ausgelesen
+    function Get-Gateway {
         $gateway = Get-NetRoute -DestinationPrefix "0.0.0.0/0" | Select-Object -ExpandProperty "NextHop"
-        $gateway | Set-Clipboard
         return $gateway
     }
 
-    function Get-OS{
+    #Betriebssystemversion wird ausgelesen
+    function Get-OS {
         $os = (Get-WMIObject win32_operatingsystem).caption
-        $os | Set-Clipboard
         return $os
     }
     
-    function Get-WindowsKey{
+    #Windows-Key wird ausgelesen
+    function Get-WindowsKey {
         $WindowsKey = (Get-WmiObject SoftwareLicensingService).OA3xOriginalProductKey
-        $WindowsKey | Set-Clipboard
         return $WindowsKey
     }
 
-    function Get-DocSummary{
+    #Zusammenfassung wird erstellt
+    function Get-Summary {
         Ausgabe "-------------------------------------------" Green
         Ausgabe "Hostname: " -NoNewLine
         Ausgabe  (Get-Hostname) Yellow 
@@ -178,12 +208,14 @@ function Doc{
         Ausgabe (get-serial) Yellow
         Ausgabe "Modell: " -NoNewLine
         Ausgabe (get-model) Yellow
+        Ausgabe "Installationsdatum: " -NoNewLine
+        Ausgabe (Get-InstallDate) Yellow
         Ausgabe "IP-Adresse: " -NoNewLine
         Ausgabe (get-ipaddress) Yellow
         Ausgabe "Mac-Adresse: " -NoNewLine
         Ausgabe (get-MacAddress) Yellow
         Ausgabe "Gateway: " -NoNewLine
-        Ausgabe (Get-gateway) -Yellow
+        Ausgabe (Get-gateway) Yellow
         Ausgabe "Betriebssystem: " -NoNewLine
         Ausgabe (get-OS) Yellow
         Ausgabe "Windows-Key: " -NoNewLine
@@ -191,9 +223,99 @@ function Doc{
         Ausgabe "-------------------------------------------" Green
     }
 
+    If ($Value) {
+        switch ($Value) {
+            Hostname { 
+                if($Copy){
+                    Ausgabe (Get-Hostname) Green
+                    Get-Hostname | Set-Clipboard
+                } 
+                else{
+                    Ausgabe (Get-Hostname) Green
+                }
+            }
+            Serial {
+                if($Copy){
+                    Ausgabe (Get-Serial) Green
+                    Get-Serial | Set-Clipboard
+                } 
+                else{
+                    Ausgabe (Get-Serial) Green
+                 }
+                
+            }
+            Model { 
+                if($copy){
+                    Ausgabe (Get-Model) Green
+                    Get-Model | Set-Clipboard
+                }
+                else{
+                    Ausgabe (Get-Model) Green
+                }
+            }
+            InstallDate {
+                if($Copy){
+                    Ausgabe (Get-InstallDate) Green
+                    Get-InstallDate | Set-Clipboard
+                }
+                else{
+                    Ausgabe (Get-InstallDate) Green
+                    Get-InstallDate | Set-Clipboard
+                }
+            } 
+            IPAddress{
+                if($Copy){
+                    Ausgabe (Get-IpAddress) Green
+                    Get-IpAddress | Set-Clipboard
+                }
+                else{
+                    Ausgabe (Get-IpAddress) Green
+                }
+            }
+            MacAddress{
+                if($Copy){
+                    Ausgabe (Get-MacAddress) Green
+                    Get-MacAddress | Set-Clipboard
+                } 
+                else{ 
+                    Ausgabe (Get-MacAddress) Green
+                }
+            }
+            Gateway{
+                if($Copy){
+                    Ausgabe (Get-Gateway) Green
+                    Get-Gateway | Set-Clipboard
+                }
+                else{
+                    Ausgabe (Get-Gateway) Green
+                }
+            }
+            OS { 
+                if($Copy){
+                    Ausgabe (Get-OS) Green
+                    Get-OS | Set-Clipboard
+                }
+                else{
+                    Ausgabe (Get-OS) Green
+                }
+            }
+            Windowskey { 
+                if($Copy){
+                    Ausgabe (Get-WindowsKey) Green
+                    Get-WindowsKey | Set-Clipboard
+                }
+                else{
+                    Ausgabe (Get-WindowsKey) Green
+                }
+            }
+            Summary { Get-Summary }
+            Default { Get-Summary }
+        }
+    }
+
 }
 
-function Cleanup{
+function Cleanup {
 
 }
 
@@ -234,6 +356,7 @@ function Deploy {
 
 
 
+#Startet die Ausgabe für den Willkommenstext + Erklärung
 ModuleStarted
 
 
