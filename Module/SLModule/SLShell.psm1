@@ -181,8 +181,8 @@ function Doc {
         Ausgabe (get-serial) Yellow
         Ausgabe "Modell: " -NoNewLine
         Ausgabe (get-model) Yellow
-        Ausgabe "Installationsdatum: " Yellow
-        Ausgabe (Get-InstallDate) -NoNewLine
+        Ausgabe "Installationsdatum: " -NoNewLine
+        Ausgabe (Get-InstallDate) Yellow
         Ausgabe "IP-Adresse: " -NoNewLine
         Ausgabe (get-ipaddress) Yellow
         Ausgabe "Mac-Adresse: " -NoNewLine
