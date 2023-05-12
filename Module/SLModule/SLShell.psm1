@@ -93,64 +93,71 @@ function ModuleStarted {
     Ausgabe " - Deployed verschiedene Services und Features VMs, DCs usw." Green
 }
 
-function Doc{
+function Doc {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0, Mandatory = $false)]
+        [ValidateSet('Hostname', 'Serial', 'Model', 'IPAddress','MacAddress','OS','Windowskey','DocSummary')]
+        [string]
+        $Value
+    )
 
 
-    function Get-Hostname{
+    function Get-Hostname {
         $hostname = (Get-CimInstance -ClassName Win32_ComputerSystem).Name
         $hostname | Set-Clipboard
         return $hostname
     }
 
-    function Get-Serial{
+    function Get-Serial {
         $serial = (Get-CimInstance -ClassName Win32_BIOS -Property SerialNumber).SerialNumber
         $serial | Set-Clipboard
         return $serial
     }
     
-    function Get-Model{
+    function Get-Model {
         $model = (Get-CimInstance CIM_ComputerSystem).Model 
         $model | Set-Clipboard
         return $model
     }
 
-    function Get-InstallDate{
+    function Get-InstallDate {
         $installdate = (Get-WmiObject Win32_OperatingSystem).ConvertToDateTime( (Get-WmiObject Win32_OperatingSystem).InstallDate) 
         $installdate | Set-Clipboard
         return $installdate
     }
 
-    function Get-IpAddress{
+    function Get-IpAddress {
         $ip = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias Ethernet).ipaddress
         $ip | Set-Clipboard
         return $ip
     }
 
-    function Get-MacAddress{
+    function Get-MacAddress {
         $mac = Get-NetAdapter | Where-Object LinkSpeed -match "1* Gbps" | Where-Object Status -eq "Up" | Select-Object -ExpandProperty "MacAddress"
         $mac | Set-Clipboard
         return $mac
     }
 
-    function Get-Gateway{
+    function Get-Gateway {
         $gateway = Get-NetRoute -DestinationPrefix "0.0.0.0/0" | Select-Object -ExpandProperty "NextHop"
         $gateway | Set-Clipboard
         return $gateway
     }
 
-    function Get-OS{
+    function Get-OS {
         $os = (Get-WMIObject win32_operatingsystem).caption
         $os | Set-Clipboard
         return $os
     }
     
-    function Get-WindowsKey{
+    function Get-WindowsKey {
         $WindowsKey = (Get-WmiObject SoftwareLicensingService).OA3xOriginalProductKey
         $WindowsKey | Set-Clipboard
         return $WindowsKey
     }
 
-    function Get-DocSummary{
+    function Get-DocSummary {
         Ausgabe "-------------------------------------------" Green
         Ausgabe "Hostname: " -NoNewLine
         Ausgabe  (Get-Hostname) Yellow 
@@ -171,9 +178,28 @@ function Doc{
         Ausgabe "-------------------------------------------" Green
     }
 
+
+    If ($Value) {
+        switch ($Value) {
+            Hostname { Get-Hostname }
+            Serial { Get-Serial }
+            Model { Get-Model }
+            Installdate { Get-InstallDate }
+            IPAddress{Get-IpAddress}
+            MacAddress { Get-MacAddress }
+            OS { Get-OS }
+            Windowskey { Get-WindowsKey }
+            Summary { Get-DocSummary }
+            Default { Get-DocSummary }
+        }
+    }
+    
+
+   
+
 }
 
-function Cleanup{
+function Cleanup {
 
 }
 
