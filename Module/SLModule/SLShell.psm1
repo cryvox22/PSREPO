@@ -8,7 +8,7 @@ ToDo's für die Untermodule:
 
 SL-Doc: 
 - Systemspecs mit auslesen
-- Copy als zusatzbefehl angeben
+- Copy als zusatzbefehl angeben -> erledigt
 - Teilinformationen abrufbar -> erledigt
 - Get-Mac anpassen -> erleidgt
 - alle Teilbereiche in eigene Functions auslagern -> erledigt
@@ -106,37 +106,11 @@ function ModuleStarted {
 }
 
 
-
-<#
-.SYNOPSIS
-    Hier könnte deine Beschreibung stehen
-.DESCRIPTION
-    Diese Funktion regelt eine Eingabe
-.NOTES
-    Fehler sind beinhaltet
-.LINK
-    https://dieseurlgibtesnicht
-.EXAMPLE
-    SL-Eingabe "Das ist mein Text" Red -NoNewLine
-#>
-function Eingabe {
-    [CmdletBinding()]
-    param (
-        [Parameter(Position = 0, Mandatory = $true)]
-        [string]
-        $Text
-    )
-    Ausgabe -Text $Text": " -Farbe Green -NoNewLine
-    $InputVar = Read-Host
-    return $InputVar
-}
-
-
 function Doc {
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, Mandatory = $false)]
-        [ValidateSet('Hostname', 'Serial', 'Model', 'InstallDate', 'IpAddress','MacAddress','Gateway','OS','Windowskey','Summary')]
+        [ValidateSet('Hostname', 'Serial', 'Model', 'InstallDate', 'IpAddress','MacAddress','Gateway','OS','Windowskey','Specs','Complete','Summary')]
         [string]
         $Value,
 
@@ -199,6 +173,62 @@ function Doc {
         return $WindowsKey
     }
 
+    function Get-Specs{
+        
+        function Get-Cpu(){
+            $Cpu = (Get-WmiObject win32_processor).Name
+            return $Cpu 
+        }
+        function Get-Memory(){
+        $Ram = (Get-WMIObject -class Win32_Physicalmemory).Capacity
+        $Riegel = 0
+        foreach ($item in $ram)
+        {
+            $item = $item/1073741824
+            $RamCapacity += $item
+            <#Ausgabe "Riegel " -NoNewLine
+            Ausgabe $counter -NoNewLine
+            Ausgabe ": " -NoNewLine
+            Ausgabe $item Cyan -NoNewLine
+            Ausgabe " GB | " Cyan -NoNewLine#>
+            $Riegel++
+        }
+        Ausgabe "RAM: " -NoNewLine
+        Ausgabe $RamCapacity Cyan -NoNewLine
+        Ausgabe " GB " Cyan -NoNewLine
+        Ausgabe "(Anzahl Riegel: " -NoNewLine
+        Ausgabe $Riegel Cyan -NoNewLine
+        Ausgabe ")"
+        }
+
+        function Get-Gpu(){
+            $Gpu = (get-wmiobject win32_videocontroller).name
+            return $Gpu
+        }
+
+        function Get-Disks {
+            $Disks = Get-WmiObject Win32_LogicalDisk | select DeviceID, Size
+            Ausgabe "Festplatten: "
+            foreach($item in $Disks){
+                $Diskspace = $item.Size/1073741824
+                Ausgabe $item.DeviceID -NoNewLine
+                Ausgabe " " -NoNewLine
+                Ausgabe ([System.Math]::Ceiling($Diskspace)) Cyan -NoNewLine
+                Ausgabe " GB" Cyan
+            }
+            
+        }
+
+        Ausgabe "Systemspezifikation:" Yellow
+                    Ausgabe "--------------------" Yellow
+                    Ausgabe "Prozessor: " -NoNewLine
+                    Ausgabe (Get-Cpu) Cyan
+                    Get-Memory
+                    Ausgabe "Grafikkarte: " -NoNewLine
+                    Ausgabe (Get-Gpu) Cyan
+                    Get-Disks  
+
+    }
     #Zusammenfassung wird erstellt
     function Get-Summary {
         Ausgabe "-------------------------------------------" Green
@@ -222,6 +252,8 @@ function Doc {
         Ausgabe (get-WindowsKey) Yellow
         Ausgabe "-------------------------------------------" Green
     }
+
+   
 
     If ($Value) {
         switch ($Value) {
@@ -308,12 +340,22 @@ function Doc {
                     Ausgabe (Get-WindowsKey) Green
                 }
             }
+            Specs{
+                    Get-Specs                  
+            }
             Summary { Get-Summary }
+
+            Complete{
+                Get-Summary
+                Get-Specs
+            }
+
             Default { Get-Summary }
         }
     }
-
 }
+
+
 
 function Cleanup {
 
