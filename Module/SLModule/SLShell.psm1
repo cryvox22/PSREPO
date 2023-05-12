@@ -18,7 +18,7 @@ SL-Doc:
 
 #>
 
-function Ausgabe{
+function Ausgabe {
     [CmdletBinding()]
     param(
 
@@ -28,8 +28,8 @@ function Ausgabe{
 
 
         # Farbe
-        [Parameter(Position =  1, Mandatory = $false)]
-        [ValidateSet('Green','Red','Cyan','Yellow','White','Blue','Magenta')]
+        [Parameter(Position = 1, Mandatory = $false)]
+        [ValidateSet('Green', 'Red', 'Cyan', 'Yellow', 'White', 'Blue', 'Magenta')]
         [String]
         $Farbe = "White",
 
@@ -40,9 +40,10 @@ function Ausgabe{
 
  
         
-    if($NoNewLine){
+    if ($NoNewLine) {
         Write-Host -Object $Text -ForegroundColor $Farbe -NoNewline
-    }else{
+    }
+    else {
         Write-Host -Object $Text -ForegroundColor $Farbe
     }
     
@@ -82,18 +83,18 @@ function ModuleStarted {
 
 function Eingabe {
     
-        [CmdletBinding()]
-        param (
-            [Parameter(Position = 0, Mandatory = $true)]
-            [string]
-            $Text
-        )
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0, Mandatory = $true)]
+        [string]
+        $Text
+    )
 
 
-        Ausgabe -Text $Text": " -Farbe Green -NoNewLine
-        $InputVar = Read-Host
+    Ausgabe -Text $Text": " -Farbe Green -NoNewLine
+    $InputVar = Read-Host
         
-        return $InputVar
+    return $InputVar
     
 
 }
@@ -101,15 +102,15 @@ function Eingabe {
 function Doc {
 
     
-        [CmdletBinding()]
-        param (
-            [Parameter(Mandatory = $false)]
-            [switch]
-            $Short
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [switch]
+        $Short
 
 
 
-        )
+    )
     
 
     Ausgabe "-------------------------------------------" Green
