@@ -1,18 +1,23 @@
 <#
-
-Eigene Read- und Write-Function schreiben, die in den Untermodulen verwendet werden kann
-
-
-
 ToDo's für die Untermodule: 
 
 SL-Doc: 
-- Systemspecs mit auslesen
+- Systemspecs mit auslesen -> erledigt
 - Copy als zusatzbefehl angeben -> erledigt
 - Teilinformationen abrufbar -> erledigt
 - Get-Mac anpassen -> erleidgt
 - alle Teilbereiche in eigene Functions auslagern -> erledigt
 - Ausgabe und Zusammenfassung verbessern -> erledigt
+
+Sl-Cleanup: 
+- Papierkorb wird geleert und temp-files gelöscht -> erledigt
+
+SL-Netdoc: 
+- Ping 
+- Ping mit Port
+- tracert
+- nslookup in beide Richtungen
+- Ping bis unterbrochen wird
 
 Allgemein: 
 - Cmdlet für Read und Write-Host erstellen -> erledigt
@@ -355,10 +360,14 @@ function Doc {
     }
 }
 
-
-
 function Cleanup {
-
+    [CmdletBinding()]
+    Param(
+        $tempfolders = @( "C:\Windows\Temp\*", "C:\Windows\Prefetch\*", "C:\Documents and Settings\*\Local Settings\temp\*", "C:\Users\*\Appdata\Local\Temp\*")
+    )
+    Remove-Item $tempfolders -force -recurse -ErrorAction SilentlyContinue
+    Clear-RecycleBin -Force
+    Ausgabe "Cleanup wurde durchgefuehrt! Papierkorp ist geleert und Temporäre Dateien wurden geloescht!"
 }
 
 function Install {
