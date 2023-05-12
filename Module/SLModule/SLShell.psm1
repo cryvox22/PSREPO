@@ -53,6 +53,18 @@ function Ausgabe {
 
 }
 
+function Eingabe {
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0, Mandatory = $true)]
+        [string]
+        $Text
+    )
+    Ausgabe -Text $Text": " -Farbe Green -NoNewLine
+    $InputVar = Read-Host
+    return $InputVar
+}
+
 function ModuleStarted {
     Clear-Host
     Ausgabe "---------------------------------" Red
@@ -82,24 +94,6 @@ function ModuleStarted {
 }
 
 function Doc{
-#----------------------
-
-#Hostname
-
-
-
-
-function Eingabe {
-        [CmdletBinding()]
-        param (
-            [Parameter(Position = 0, Mandatory = $true)]
-            [string]
-            $Text
-        )
-        Ausgabe -Text $Text": " -Farbe Green -NoNewLine
-        $InputVar = Read-Host
-        return $InputVar
-}
 
 
     function Get-Hostname{
