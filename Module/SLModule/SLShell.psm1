@@ -172,16 +172,19 @@ function ModuleStarted {
 function Doc {
     <#
     .SYNOPSIS
-        A short one-line action-based description, e.g. 'Tests if a function is valid'
+        Dokumentationsinformationen werden ausgegeben und können direkt kopiert werden
     .DESCRIPTION
-        A longer description of the function, its purpose, common use cases, etc.
+        Mittels dieser Funktion kann eine Gesamtübersicht von Systeminformationen und Specs oder Einzelne Teilbereiche ausgelesen und kopiert werden
     .NOTES
-        Information or caveats about the function e.g. 'This function is not supported in Linux'
+        Keine weiteren Informationen verfügbar
     .LINK
-        Specify a URI to a help page, this will show when Get-Help -Online is used.
+        Keine Online-Hilfe verfügbar
     .EXAMPLE
-        Test-MyTestFunction -Verbose
-        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+        SL-Doc -Summary
+        Gibt eine Gesamtzusammenfassung aus
+    .EXAMPLE
+        SL-Doc -Hostname -Copy
+        Gibt den Hostname aus und kopiert ihn in die Zwischenablage
     #>
     
     
@@ -433,7 +436,23 @@ function Doc {
     }
 }
 
+#Bereinigt überflüssige Dateien und löscht Papierkorb
 function Cleanup {
+    <#
+    .SYNOPSIS
+        Bereinigt die temporären Dateien und löscht den Papierkorb
+    .DESCRIPTION
+        Windows-Temp und Prefetch sowie die Usertemps werden gelöscht sowie der Papierkorb
+    .NOTES
+        Keine Zusätzlichen Parameter können mitgegeben werden
+    .LINK
+        Keine Online-Hilfe verfügbar
+    .EXAMPLE
+        SL-Cleanup
+        Entfernt temp-files und löscht Papierkorb
+    #>
+    
+    
     [CmdletBinding()]
     Param(
         $tempfolders = @( "C:\Windows\Temp\*", "C:\Windows\Prefetch\*", "C:\Documents and Settings\*\Local Settings\temp\*", "C:\Users\*\Appdata\Local\Temp\*")
@@ -443,39 +462,170 @@ function Cleanup {
     Ausgabe "Cleanup wurde durchgefuehrt! Papierkorp ist geleert und Temporäre Dateien wurden geloescht!"
 }
 
-function Install {
+#Verbindet zu verschiedenen Cloud-Services (M365, Teams-Admin, ExOnline, AzureAD)
+function Connect {
+   <#
+   .SYNOPSIS
+    A short one-line action-based description, e.g. 'Tests if a function is valid'
+   .DESCRIPTION
+    A longer description of the function, its purpose, common use cases, etc.
+   .NOTES
+    Information or caveats about the function e.g. 'This function is not supported in Linux'
+   .LINK
+    Specify a URI to a help page, this will show when Get-Help -Online is used.
+   .EXAMPLE
+    Test-MyTestFunction -Verbose
+    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+   #>
+   
+    
+}
 
-    Write-Host -ForegroundColor Green "Waehle die zu installierende Software aus!"
+#Hilft bei verschiedenen Tätigkeiten und der Fehlerbehebung von Exchange Online
+function ExoDoc{
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+}
+
+
+#Installiert Anwendungen / Apps
+function Install {
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+   Ausgabe "Waehle die zu installierende Software aus!" Green
 
 
 }
 
+#Entfernt Anwendungen / Apps und Dienste
 function Remove {
-    Write-Host  -ForegroundColor Green "Waehle die zu deinstallierende Software aus!"
-
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+    
+    Ausgabe "Waehle die zu deinstallierende Software aus!" Green
+    
     function RemoveServerEye {
-
+        Ausgabe "Server-Eye wird vollstaendig entfernt..."
     }
 }
 
+#Hilft bei der Standard-Netzwerk-Fehlerbehebung
 function Netdoc {
-    Write-Host -ForegroundColor Green "Waehle dein Netdoc-Tool aus!"
+   <#
+   .SYNOPSIS
+    A short one-line action-based description, e.g. 'Tests if a function is valid'
+   .DESCRIPTION
+    A longer description of the function, its purpose, common use cases, etc.
+   .NOTES
+    Information or caveats about the function e.g. 'This function is not supported in Linux'
+   .LINK
+    Specify a URI to a help page, this will show when Get-Help -Online is used.
+   .EXAMPLE
+    Test-MyTestFunction -Verbose
+    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+   #>
+   
+   
+   Ausgabe "Waehle dein Netdoc-Tool aus!" Green
 }
 
-function Connect {
-    Write-Host -ForegroundColor Green "Wohin moechtest du dich connecten?"
-}
-
+#Deployed Standards für Server(VMs) und Clients
 function Standard {
-    Write-Host -ForegroundColor Green "Welche Standards willst du ausrollen?!"
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+    
+    Ausgabe "Welche Standards willst du ausrollen?!" Green
 }
 
+#Hilft bei der Informationsbeschaffung in SQL-Server-Umgebungen
 function SQL {
-    Write-Host -ForegroundColor Green "Welche SQL-Daten brauchst du?"
+   <#
+   .SYNOPSIS
+    A short one-line action-based description, e.g. 'Tests if a function is valid'
+   .DESCRIPTION
+    A longer description of the function, its purpose, common use cases, etc.
+   .NOTES
+    Information or caveats about the function e.g. 'This function is not supported in Linux'
+   .LINK
+    Specify a URI to a help page, this will show when Get-Help -Online is used.
+   .EXAMPLE
+    Test-MyTestFunction -Verbose
+    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+   #>
+   
+   
+    Ausgabe "Welche SQL-Daten brauchst du?" Green
 }
 
+#Hilft beim Deployment von Serverrollen und deren Konfiguration
 function Deploy {
-    Write-Host -ForegroundColor Green "Was willst du deployen?"
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+
+    Ausgabe "Was willst du deployen?" Green
 }
 
 
