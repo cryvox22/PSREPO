@@ -68,14 +68,14 @@ SL-Deploy:
 - Fileserver
     - mit Freigaben
 
-SL-HV-Mgmt
+SL-HVMgmt
 - neue VMs
 - VMs auflisten und export
 - VM auswählen und start, stop 
 - Snapshot erstellen
 - VM Specs auslesen
 
-SL-Fileshare
+SL-Fileshare:
 - Berechtigungen von Ordnern auslesen und export
 - Berechtigungen setzen
 - neue Freigabe auslesen
@@ -167,10 +167,10 @@ function Eingabe {
     )
 
     Ausgabe -Text $Text": " -Farbe $Farbe -NoNewLine
-    if($Secure){
+    if ($Secure) {
         $InputVar = Read-Host -MaskInput
     }
-    else{
+    else {
         $InputVar = Read-Host
     }
     
@@ -220,12 +220,20 @@ function ModuleStarted {
     Ausgabe " - Tolls fuer Basic NetzwerkTroubleshooting" Green
     Ausgabe "SL-Connect" Cyan -NoNewLine 
     Ausgabe " - Baut Verbindungen zu verschiedenen CloudShells auf (M365, AzureAD, ExOnline, Servereye, Datto etc.)" Green
+    Ausgabe "SL-ExoDoc" Cyan -NoNewLine
+    Ausgabe " - Grundsätzliche Anpassungen und Informationsbeschaffung bei ExchangeOnline-Servern" Green
     Ausgabe "SL-Standard" Cyan -NoNewLine
     Ausgabe " - Setzt Basic Settings fuer Clients und Server" Green
     Ausgabe "SL-SQL" Cyan -NoNewLine
     Ausgabe " - Hilft bei der Informationsbeschaffung im SQL-Server" Green
     Ausgabe "SL-Deploy" Cyan -NoNewLine
     Ausgabe " - Deployed verschiedene Services und Features VMs, DCs usw." Green
+    Ausgabe "SL-HVMgmt" Cyan -NoNewLine
+    Ausgabe " - HyperVManagement (VMs etc. erstellen, auslesen und anpassen" Green
+    Ausgabe "SL-Fileshare" Cyan -NoNewLine
+    Ausgabe " - Informationsbeschaffung, Anpassung und Erstellung bei Netzwerkfreigaben" Green
+    Ausgabe "SL-ADController" Cyan -NoNewLine
+    Ausgabe " - Informtaionsbeschaffung, Anpassung und Konfiguration von ActiveDirectory Domänen" Green
 }
 
 #Dokumentationsinformationen werden ausgegeben und können direkt kopiert werden
@@ -251,7 +259,7 @@ function Doc {
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, Mandatory = $false)]
-        [ValidateSet('Hostname', 'Serial', 'Model', 'InstallDate', 'IpAddress','MacAddress','Gateway','OS','Windowskey','Specs','Complete','Summary')]
+        [ValidateSet('Hostname', 'Serial', 'Model', 'InstallDate', 'IpAddress', 'MacAddress', 'Gateway', 'OS', 'Windowskey', 'Specs', 'Complete', 'Summary')]
         [string]
         $Value,
 
@@ -314,35 +322,34 @@ function Doc {
         return $WindowsKey
     }
 
-    function Get-Specs{
+    function Get-Specs {
         
-        function Get-Cpu(){
+        function Get-Cpu() {
             $Cpu = (Get-WmiObject win32_processor).Name
             return $Cpu 
         }
-        function Get-Memory(){
-        $Ram = (Get-WMIObject -class Win32_Physicalmemory).Capacity
-        $Riegel = 0
-        foreach ($item in $ram)
-        {
-            $item = $item/1073741824
-            $RamCapacity += $item
-            <#Ausgabe "Riegel " -NoNewLine
+        function Get-Memory() {
+            $Ram = (Get-WMIObject -class Win32_Physicalmemory).Capacity
+            $Riegel = 0
+            foreach ($item in $ram) {
+                $item = $item / 1073741824
+                $RamCapacity += $item
+                <#Ausgabe "Riegel " -NoNewLine
             Ausgabe $counter -NoNewLine
             Ausgabe ": " -NoNewLine
             Ausgabe $item Cyan -NoNewLine
             Ausgabe " GB | " Cyan -NoNewLine#>
-            $Riegel++
-        }
-        Ausgabe "RAM: " -NoNewLine
-        Ausgabe $RamCapacity Cyan -NoNewLine
-        Ausgabe " GB " Cyan -NoNewLine
-        Ausgabe "(Anzahl Riegel: " -NoNewLine
-        Ausgabe $Riegel Cyan -NoNewLine
-        Ausgabe ")"
+                $Riegel++
+            }
+            Ausgabe "RAM: " -NoNewLine
+            Ausgabe $RamCapacity Cyan -NoNewLine
+            Ausgabe " GB " Cyan -NoNewLine
+            Ausgabe "(Anzahl Riegel: " -NoNewLine
+            Ausgabe $Riegel Cyan -NoNewLine
+            Ausgabe ")"
         }
 
-        function Get-Gpu(){
+        function Get-Gpu() {
             $Gpu = (get-wmiobject win32_videocontroller).name
             return $Gpu
         }
@@ -350,8 +357,8 @@ function Doc {
         function Get-Disks {
             $Disks = Get-WmiObject Win32_LogicalDisk | select DeviceID, Size
             Ausgabe "Festplatten: "
-            foreach($item in $Disks){
-                $Diskspace = $item.Size/1073741824
+            foreach ($item in $Disks) {
+                $Diskspace = $item.Size / 1073741824
                 Ausgabe $item.DeviceID -NoNewLine
                 Ausgabe " " -NoNewLine
                 Ausgabe ([System.Math]::Ceiling($Diskspace)) Cyan -NoNewLine
@@ -361,13 +368,13 @@ function Doc {
         }
 
         Ausgabe "Systemspezifikation:" Yellow
-                    Ausgabe "--------------------" Yellow
-                    Ausgabe "Prozessor: " -NoNewLine
-                    Ausgabe (Get-Cpu) Cyan
-                    Get-Memory
-                    Ausgabe "Grafikkarte: " -NoNewLine
-                    Ausgabe (Get-Gpu) Cyan
-                    Get-Disks  
+        Ausgabe "--------------------" Yellow
+        Ausgabe "Prozessor: " -NoNewLine
+        Ausgabe (Get-Cpu) Cyan
+        Get-Memory
+        Ausgabe "Grafikkarte: " -NoNewLine
+        Ausgabe (Get-Gpu) Cyan
+        Get-Disks  
 
     }
     #Zusammenfassung wird erstellt
@@ -399,94 +406,94 @@ function Doc {
     If ($Value) {
         switch ($Value) {
             Hostname { 
-                if($Copy){
+                if ($Copy) {
                     Ausgabe (Get-Hostname) Green
                     Get-Hostname | Set-Clipboard
                 } 
-                else{
+                else {
                     Ausgabe (Get-Hostname) Green
                 }
             }
             Serial {
-                if($Copy){
+                if ($Copy) {
                     Ausgabe (Get-Serial) Green
                     Get-Serial | Set-Clipboard
                 } 
-                else{
+                else {
                     Ausgabe (Get-Serial) Green
-                 }
+                }
                 
             }
             Model { 
-                if($copy){
+                if ($copy) {
                     Ausgabe (Get-Model) Green
                     Get-Model | Set-Clipboard
                 }
-                else{
+                else {
                     Ausgabe (Get-Model) Green
                 }
             }
             InstallDate {
-                if($Copy){
+                if ($Copy) {
                     Ausgabe (Get-InstallDate) Green
                     Get-InstallDate | Set-Clipboard
                 }
-                else{
+                else {
                     Ausgabe (Get-InstallDate) Green
                     Get-InstallDate | Set-Clipboard
                 }
             } 
-            IPAddress{
-                if($Copy){
+            IPAddress {
+                if ($Copy) {
                     Ausgabe (Get-IpAddress) Green
                     Get-IpAddress | Set-Clipboard
                 }
-                else{
+                else {
                     Ausgabe (Get-IpAddress) Green
                 }
             }
-            MacAddress{
-                if($Copy){
+            MacAddress {
+                if ($Copy) {
                     Ausgabe (Get-MacAddress) Green
                     Get-MacAddress | Set-Clipboard
                 } 
-                else{ 
+                else { 
                     Ausgabe (Get-MacAddress) Green
                 }
             }
-            Gateway{
-                if($Copy){
+            Gateway {
+                if ($Copy) {
                     Ausgabe (Get-Gateway) Green
                     Get-Gateway | Set-Clipboard
                 }
-                else{
+                else {
                     Ausgabe (Get-Gateway) Green
                 }
             }
             OS { 
-                if($Copy){
+                if ($Copy) {
                     Ausgabe (Get-OS) Green
                     Get-OS | Set-Clipboard
                 }
-                else{
+                else {
                     Ausgabe (Get-OS) Green
                 }
             }
             Windowskey { 
-                if($Copy){
+                if ($Copy) {
                     Ausgabe (Get-WindowsKey) Green
                     Get-WindowsKey | Set-Clipboard
                 }
-                else{
+                else {
                     Ausgabe (Get-WindowsKey) Green
                 }
             }
-            Specs{
-                    Get-Specs                  
+            Specs {
+                Get-Specs                  
             }
             Summary { Get-Summary }
 
-            Complete{
+            Complete {
                 Get-Summary
                 Get-Specs
             }
@@ -524,7 +531,7 @@ function Cleanup {
 
 #Verbindet zu verschiedenen Cloud-Services (M365, Teams-Admin, ExOnline, AzureAD)
 function Connect {
-   <#
+    <#
    .SYNOPSIS
     A short one-line action-based description, e.g. 'Tests if a function is valid'
    .DESCRIPTION
@@ -542,7 +549,7 @@ function Connect {
 }
 
 #Hilft bei verschiedenen Tätigkeiten und der Fehlerbehebung von Exchange Online
-function ExoDoc{
+function ExoDoc {
     <#
     .SYNOPSIS
         A short one-line action-based description, e.g. 'Tests if a function is valid'
@@ -576,7 +583,7 @@ function Install {
     #>
     
     
-   Ausgabe "Waehle die zu installierende Software aus!" Green
+    Ausgabe "Waehle die zu installierende Software aus!" Green
 
 
 }
@@ -608,7 +615,7 @@ function Remove {
 
 #Hilft bei der Standard-Netzwerk-Fehlerbehebung
 function Netdoc {
-   <#
+    <#
    .SYNOPSIS
     A short one-line action-based description, e.g. 'Tests if a function is valid'
    .DESCRIPTION
@@ -623,7 +630,7 @@ function Netdoc {
    #>
    
    
-   Ausgabe "Waehle dein Netdoc-Tool aus!" Green
+    Ausgabe "Waehle dein Netdoc-Tool aus!" Green
 }
 
 #Deployed Standards für Server(VMs) und Clients
@@ -649,7 +656,7 @@ function Standard {
 
 #Hilft bei der Informationsbeschaffung in SQL-Server-Umgebungen
 function SQL {
-   <#
+    <#
    .SYNOPSIS
     A short one-line action-based description, e.g. 'Tests if a function is valid'
    .DESCRIPTION
@@ -688,6 +695,62 @@ function Deploy {
     Ausgabe "Was willst du deployen?" Green
 }
 
+#HyperVManagement (VMs etc. erstellen, auslesen und anpassen)
+function HVMgmt{
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+}
+
+#Konfiguration, Informationsbeschaffung von Fileshares + neue Erstellung
+function Fileshare{
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+}
+
+#Konfiguration und Informationbeschaffung bei ActiveDirectory-Servern
+function ADController{
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+}
 
 
 #Startet die Ausgabe für den Willkommenstext + Erklärung
