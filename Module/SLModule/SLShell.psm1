@@ -187,55 +187,6 @@ function ExportData {
     
 }
 
-#Willkommenstext wird ausgegeben, in dem die allgemeinen Teilmodule aufgelistet und erklärt werden
-function ModuleStarted {
-    <#
-.SYNOPSIS
-    Diese Funktion dient lediglich für den Begrüßungstext 
-.DESCRIPTION
-    Hier werden die einzelnen Teilmodule und deren groben Funktionsweise aufgelistet.
-.NOTES
-    Kein Userinput möglich und keine weitere Funktion vorhanden
-.LINK
-    Keine Online-Hilfe verfügbar
-.EXAMPLE
-    keine Beispiele
-#>
-    Clear-Host
-    Ausgabe "---------------------------------" Red
-    Ausgabe "-----Willkommen zur SLShell!-----" Red
-    Ausgabe "---------------------------------" Red
-    Ausgabe " "
-    Ausgabe "WICHTIG: Jede Funktion wird mit dem Praefix 'SL-' aufgerufen" Green
-    Ausgabe "-----------------------------------------------------------" Green
-    Ausgabe "SL-Doc" Cyan -NoNewLine
-    Ausgabe " - Gathert alle wichtigen Informationen zur Dokumentation in IT-Glue" Green
-    Ausgabe "SL-Cleanup" Cyan -NoNewLine 
-    Ausgabe " - Bereinigt PCs und Server" Green
-    Ausgabe "SL-Install" Cyan -NoNewLine
-    Ausgabe " - Installiert verschiedene Anwendungen" Green
-    Ausgabe "SL-Remove" Cyan -NoNewLine
-    Ausgabe " - Deinstalliert verschiedene Anwendungen, Features etc." Green
-    Ausgabe "SL-Netdoc" Cyan -NoNewLine
-    Ausgabe " - Tolls fuer Basic NetzwerkTroubleshooting" Green
-    Ausgabe "SL-Connect" Cyan -NoNewLine 
-    Ausgabe " - Baut Verbindungen zu verschiedenen CloudShells auf (M365, AzureAD, ExOnline, Servereye, Datto etc.)" Green
-    Ausgabe "SL-ExoDoc" Cyan -NoNewLine
-    Ausgabe " - Grundsätzliche Anpassungen und Informationsbeschaffung bei ExchangeOnline-Servern" Green
-    Ausgabe "SL-Standard" Cyan -NoNewLine
-    Ausgabe " - Setzt Basic Settings fuer Clients und Server" Green
-    Ausgabe "SL-SQL" Cyan -NoNewLine
-    Ausgabe " - Hilft bei der Informationsbeschaffung im SQL-Server" Green
-    Ausgabe "SL-Deploy" Cyan -NoNewLine
-    Ausgabe " - Deployed verschiedene Services und Features VMs, DCs usw." Green
-    Ausgabe "SL-HVMgmt" Cyan -NoNewLine
-    Ausgabe " - HyperVManagement (VMs etc. erstellen, auslesen und anpassen" Green
-    Ausgabe "SL-Fileshare" Cyan -NoNewLine
-    Ausgabe " - Informationsbeschaffung, Anpassung und Erstellung bei Netzwerkfreigaben" Green
-    Ausgabe "SL-ADController" Cyan -NoNewLine
-    Ausgabe " - Informtaionsbeschaffung, Anpassung und Konfiguration von ActiveDirectory Domänen" Green
-}
-
 #Dokumentationsinformationen werden ausgegeben und können direkt kopiert werden
 function Doc {
     <#
@@ -565,7 +516,6 @@ function ExoDoc {
     #>
 }
 
-
 #Installiert Anwendungen / Apps
 function Install {
     <#
@@ -696,7 +646,7 @@ function Deploy {
 }
 
 #HyperVManagement (VMs etc. erstellen, auslesen und anpassen)
-function HVMgmt{
+function HVMgmt {
     <#
     .SYNOPSIS
         A short one-line action-based description, e.g. 'Tests if a function is valid'
@@ -715,7 +665,7 @@ function HVMgmt{
 }
 
 #Konfiguration, Informationsbeschaffung von Fileshares + neue Erstellung
-function Fileshare{
+function Fileshare {
     <#
     .SYNOPSIS
         A short one-line action-based description, e.g. 'Tests if a function is valid'
@@ -734,7 +684,7 @@ function Fileshare{
 }
 
 #Konfiguration und Informationbeschaffung bei ActiveDirectory-Servern
-function ADController{
+function ADController {
     <#
     .SYNOPSIS
         A short one-line action-based description, e.g. 'Tests if a function is valid'
@@ -752,6 +702,54 @@ function ADController{
     
 }
 
+#Willkommenstext wird ausgegeben, in dem die allgemeinen Teilmodule aufgelistet und erklärt werden
+function ModuleStarted {
+    <#
+.SYNOPSIS
+    Diese Funktion dient lediglich für den Begrüßungstext 
+.DESCRIPTION
+    Hier werden die einzelnen Teilmodule und deren groben Funktionsweise aufgelistet.
+.NOTES
+    Kein Userinput möglich und keine weitere Funktion vorhanden
+.LINK
+    Keine Online-Hilfe verfügbar
+.EXAMPLE
+    keine Beispiele
+#>
+    Clear-Host
+    Ausgabe "---------------------------------" Red
+    Ausgabe "-----Willkommen zur SLShell!-----" Red
+    Ausgabe "---------------------------------" Red
+    Ausgabe " "
+    Ausgabe "WICHTIG: Jede Funktion wird mit dem Praefix 'SL-' aufgerufen" Green
+    Ausgabe "-----------------------------------------------------------" Green
+    Ausgabe "SL-Doc" Cyan -NoNewLine
+    Ausgabe " - Gathert alle wichtigen Informationen zur Dokumentation in IT-Glue" Green
+    Ausgabe "SL-Cleanup" Cyan -NoNewLine 
+    Ausgabe " - Bereinigt PCs und Server" Green
+    Ausgabe "SL-Install" Cyan -NoNewLine
+    Ausgabe " - Installiert verschiedene Anwendungen" Green
+    Ausgabe "SL-Remove" Cyan -NoNewLine
+    Ausgabe " - Deinstalliert verschiedene Anwendungen, Features etc." Green
+    Ausgabe "SL-Netdoc" Cyan -NoNewLine
+    Ausgabe " - Tolls fuer Basic NetzwerkTroubleshooting" Green
+    Ausgabe "SL-Connect" Cyan -NoNewLine 
+    Ausgabe " - Baut Verbindungen zu verschiedenen CloudShells auf (M365, AzureAD, ExOnline, Servereye, Datto etc.)" Green
+    Ausgabe "SL-ExoDoc" Cyan -NoNewLine
+    Ausgabe " - Grundsätzliche Anpassungen und Informationsbeschaffung bei ExchangeOnline-Servern" Green
+    Ausgabe "SL-Standard" Cyan -NoNewLine
+    Ausgabe " - Setzt Basic Settings fuer Clients und Server" Green
+    Ausgabe "SL-SQL" Cyan -NoNewLine
+    Ausgabe " - Hilft bei der Informationsbeschaffung im SQL-Server" Green
+    Ausgabe "SL-Deploy" Cyan -NoNewLine
+    Ausgabe " - Deployed verschiedene Services und Features VMs, DCs usw." Green
+    Ausgabe "SL-HVMgmt" Cyan -NoNewLine
+    Ausgabe " - HyperVManagement (VMs etc. erstellen, auslesen und anpassen" Green
+    Ausgabe "SL-Fileshare" Cyan -NoNewLine
+    Ausgabe " - Informationsbeschaffung, Anpassung und Erstellung bei Netzwerkfreigaben" Green
+    Ausgabe "SL-ADController" Cyan -NoNewLine
+    Ausgabe " - Informtaionsbeschaffung, Anpassung und Konfiguration von ActiveDirectory Domänen" Green
+}
 
 #Startet die Ausgabe für den Willkommenstext + Erklärung
 ModuleStarted
