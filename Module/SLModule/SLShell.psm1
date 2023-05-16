@@ -1,6 +1,10 @@
 <#
 ToDo's für die Untermodule: 
 
+Allgemein: 
+- Cmdlet für Read und Write-Host erstellen -> erledigt
+- Cmdlet für Export erstellen
+
 SL-Doc: 
 - Systemspecs mit auslesen -> erledigt
 - Copy als zusatzbefehl angeben -> erledigt
@@ -19,11 +23,67 @@ SL-Netdoc:
 - nslookup in beide Richtungen
 - Ping bis unterbrochen wird
 
-Allgemein: 
-- Cmdlet für Read und Write-Host erstellen -> erledigt
-- Cmdlet für Export erstellen
+SL-Connect:
+- M365
+- AzureAD
+- ExchangeOnline
+
+SL-ExoDoc:
+- Domains auslesen
+- Postfächer auslesen und exportieren (SL-Export)
+- neues Postfach anlegen
+- Kalenderberechtigungen auslesen und setzten
+- Postfachberechtigungen auslesen und setzen
+
+SL-Install:
+- TeamViewer
+- M365
+- PowerShell7
+- 7zip
+- AdobeReader
+
+SL-Remove:
+- ServerEye
+
+SL-Standard:
+- SMBv1 deaktivieren
+- Winrm aktivieren und einrichten
+- ExcecutionPolicy
+- DomainJoin + Hostname-Change
+
+SL-SQL: 
+- Instanzen, Datenbanken und Tabellen auslesen
+    - Speicherort
+    - Größe
+    - ggf. Berechtigungen + User auslesen/export und setzen
+- neue Datenbank / Tabelle erstellen
+- Standard-SQL-Befehle abschießen
 
 
+SL-Deploy:
+- DC
+- DNS
+- DHCP
+- HyperV
+- Fileserver
+    - mit Freigaben
+
+SL-HV-Mgmt
+- neue VMs
+- VMs auflisten und export
+- VM auswählen und start, stop 
+- Snapshot erstellen
+- VM Specs auslesen
+
+SL-Fileshare
+- Berechtigungen von Ordnern auslesen und export
+- Berechtigungen setzen
+- neue Freigabe auslesen
+
+SL-ADController: 
+- neuen User/Gruppen erstellen
+- User und Gruppen auslesen und export
+- Standard OUs, Gruppen und User anlegen und erstellen
 #>
 
 #Funktion für vereinfachte Ausgabe mit verkürzter Syntax
