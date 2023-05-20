@@ -27,7 +27,7 @@ SL-Utilization
 - CPUintensive / RAMintensive Prozesse auflisten (Get-Process | solrt cpu -descending | select -first 10) -> erledigt
 - ServiceOverview -> erledigt
 
-SL-Connect:
+SL-Connect: (noch keine Prüfung ob das Modul bereits installiert ist)
 - AzureAD -> erledigt
 - ExchangeOnline -> erledigt
 - MicrosoftTeams Admin -> erledigt
