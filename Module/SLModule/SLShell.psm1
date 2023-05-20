@@ -716,6 +716,12 @@ function ExoDoc {
         Test-MyTestFunction -Verbose
         Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
     #>
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [TypeName]
+        $ParameterName
+    )
 }
 
 #Installiert Anwendungen / Apps
