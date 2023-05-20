@@ -585,6 +585,7 @@ function Netdoc {
     
 }
 
+#Hilft bei RAM/CPU-Prozessübersicht
 function Utilization {
     <#
     .SYNOPSIS
@@ -596,15 +597,23 @@ function Utilization {
         SL-Utilization -Value RAM
         SL-Utilization CPU
         Listet die Prozesse der Teilbereiche auf
+    .EXAMPLE
+        SL-Utilization -Counter 10
+        SL-Utilization -Value CPU -Counter 10
+        Erhöht die Anzahl der Prozesse auf 10
     #>
     
     
     [CmdletBinding()]
     param (
-        [Parameter()]
+        [Parameter(Position = 0, Mandatory = $false)]
         [String]
         [ValidateSet('CPU', 'RAM')]
-        $Value
+        $Value,
+
+        [Parameter(Position = 1, Mandatory = $false)]
+        [Int32]
+        $Counter = 5
     )
 
 
@@ -615,7 +624,7 @@ function Utilization {
         Ausgabe ([System.Math]::Ceiling($MemoryUsage)) Cyan -NoNewLine
         Ausgabe "%" Cyan
 
-        Get-WmiObject WIN32_PROCESS | Sort-Object -Property ws -Descending | Select-Object -first 5 processname, @{Name = "Mem Usage(MB)"; Expression = { [math]::round($_.ws / 1mb) } } | Out-String
+        Get-WmiObject WIN32_PROCESS | Sort-Object -Property ws -Descending | Select-Object -first $Counter processname, @{Name = "Mem Usage(MB)"; Expression = { [math]::round($_.ws / 1mb) } } | Out-String
         
     }
 
@@ -626,7 +635,7 @@ function Utilization {
         Ausgabe $CPUUsage Cyan -NoNewLine
         Ausgabe "%" Cyan
         Ausgabe " "
-        Get-Process | Sort-Object CPU -Descending| Select-Object -first 5 ProcessName, CPU, WS | Out-String
+        Get-Process | Sort-Object CPU -Descending| Select-Object -first $Counter ProcessName, CPU, WS | Out-String
         
     }
 
