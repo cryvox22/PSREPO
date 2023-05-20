@@ -28,6 +28,10 @@ SL-Connect:
 - AzureAD
 - ExchangeOnline
 
+SL-Utilization
+- CPUintensive / RAMintensive Prozesse auflisten (Get-Process | solrt cpu -descending | select -first 10)
+- ServiceOverview
+
 SL-ExoDoc:
 - Domains auslesen
 - Postfächer auslesen und exportieren (SL-Export)
@@ -567,20 +571,101 @@ function Remove {
 function Netdoc {
     <#
    .SYNOPSIS
-    A short one-line action-based description, e.g. 'Tests if a function is valid'
+    Mithilfe dieses Teilmoduls werden einfache Netzwerk-Troubleshooting-Tools angewandt
    .DESCRIPTION
-    A longer description of the function, its purpose, common use cases, etc.
+    Im SL-Netco enthalten sind der Standard-Ping, Ping mit einem Port, Traceroute und ein DNS-Lookup
    .NOTES
-    Information or caveats about the function e.g. 'This function is not supported in Linux'
+    Dies ist die erste Version und aktuell werden noch die unformatierten Ausgaben der Befehle wie Test-NetConnection zurückgegeben 
+    In V2 sollen einfache und simple Rückgaben für die Verständlichkeit bereitgestellt werden
+    Die Destination kann immer als IPv4 oder Hostname angegeben werden.
    .LINK
-    Specify a URI to a help page, this will show when Get-Help -Online is used.
+    Aktuell ist keine Online-Hilfe verfügbar
    .EXAMPLE
-    Test-MyTestFunction -Verbose
-    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    SL-Netdoc -Destination fritz.box
+    SL-Netdoc -Dest fritz.box
+    Sl-Netdoc fritz.box
+    SL-Netdoc fritz.box -Repeat
+    Alle oben genannten Befehle führen einen Standard-Ping durch (der letzte so lange, bis er unterbrochen wird) || Das "Destination" kann weggelassen werden
+   .EXAMPLE
+    SL-Netdoc -Dest fritz.box 443 -Type PortPing
+    Führt einen Ping auf den beigefügten Port durch
+   .EXAMPLE
+    SL-Netdoc fritz.box -Traceroute
+    Führt ein Test-Connection -Traceroute durch
+   .EXAMPLE
+    SL-Netdoc fritz.box -Type Nslookup
+    Führt ein Nslookup zur Destination durch
    #>
+    [CmdletBinding()]
+    param (
+
+        [Parameter(Position = 0, Mandatory = $true)]
+        [string]
+        [Alias("Dest")]
+        $Destination,
+    
+        [Parameter(Position = 1, Mandatory = $false)]
+        [Int32]
+        $Port,
+
+        [Parameter(Position = 2, Mandatory = $false)]
+        [ValidateSet('Ping', 'PortPing', 'Traceroute', 'Nslookup')]
+        [string]
+        $Type = "Ping",
+
+        [Parameter(Position = 3, Mandatory = $false)]
+        [switch]
+        $Repeat
+    
+    )
+
+    if ($Port -and $Type -eq "Ping") {
+        $Type = "PortPing"        
+    }
+    
+
+    switch ($Type) {
+        Ping {
+
+            
+            if ($Repeat) {
+                Test-Connection -TargetName $Destination -Repeat
+            }
+            else {
+                Test-Connection -ComputerName $Destination
+            }
+            
+        }
+        PortPing {
+            if (!$Port) {
+                Ausgabe "Sie haben keinen Port gesetzt!" Red
+            }
+            else {
+                Test-NetConnection -Computername $Destination -Port $Port -InformationLevel Detailed
+            }
+        }
+
+        Traceroute {
+            if ($Port -or $Repeat) {
+                Ausgabe "Traceroute erlaubt weder Ports noch den Parameter 'Repeat'" Red
+            }
+            else {
+                Test-Connection -TargetName $Destination -Traceroute
+            }
+        }
+
+        Nslookup {
+            if ($Port -or $Repeat) {
+                Ausgabe "Nslookup akzeptiert weder Ports noch den Parameter 'Repeat'" Red
+            }
+            else {
+                Resolve-DnsName -Name $Destination    
+            }
+            
+        }
+    }
    
-   
-    Ausgabe "Waehle dein Netdoc-Tool aus!" Green
+    
 }
 
 #Deployed Standards für Server(VMs) und Clients
