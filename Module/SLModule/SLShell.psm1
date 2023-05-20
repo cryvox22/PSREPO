@@ -24,15 +24,15 @@ SL-Netdoc:
 - Ping bis unterbrochen wird -> erledigt
 
 SL-Utilization
-- CPUintensive / RAMintensive Prozesse auflisten (Get-Process | solrt cpu -descending | select -first 10)
-- ServiceOverview
+- CPUintensive / RAMintensive Prozesse auflisten (Get-Process | solrt cpu -descending | select -first 10) -> erledigt
+- ServiceOverview -> erledigt
 
 SL-Connect:
-- M365
-- AzureAD
-- ExchangeOnline
+- AzureAD -> erledigt
+- ExchangeOnline -> erledigt
+- MicrosoftTeams Admin -> erledigt
 
-SL-ExoDoc:
+SL-ExoDoc: https://learn.microsoft.com/en-us/powershell/exchange/exchange-online-powershell-v2?view=exchange-ps#updates-for-version-300-the-exo-v3-module
 - Domains auslesen
 - Postfächer auslesen und exportieren (SL-Export)
 - neues Postfach anlegen
@@ -92,21 +92,21 @@ SL-ADController:
 
 #Funktion für vereinfachte Ausgabe mit verkürzter Syntax
 function Ausgabe {
-    <#
-.SYNOPSIS
-    Eine Funktion für die vereinfachte Schreibweise einer Ausgabe
-.DESCRIPTION
-    In einem Modul oder einen Powershellskript, in dem viele Ausgaben notwendig sind, vereinfacht diese Funktion die Anwendung
-.NOTES
-    Bisher kann die Funktion noch keine Ausgaben von Strings und Variablen (auch nicht mehrmals) verbinden
-.LINK
-    Aktuell gibt es noch keine Online-Hilfe
-.EXAMPLE
-    SL-Ausgabe "Das ist ein Test!" Red -NoNewLine
-    Gibt den String "Das ist ein Test!" in roter Schriftfarbe und ohne die Erzeugung einer neuen Zeile aus
-    SL-Ausgabe $var Green
-    Gibt den Wert der Variable $var in grüner Schriftfarbe aus und erzeugt eine neue Zeilse
-#>
+        <#
+    .SYNOPSIS
+        Eine Funktion für die vereinfachte Schreibweise einer Ausgabe
+    .DESCRIPTION
+        In einem Modul oder einen Powershellskript, in dem viele Ausgaben notwendig sind, vereinfacht diese Funktion die Anwendung
+    .NOTES
+        Bisher kann die Funktion noch keine Ausgaben von Strings und Variablen (auch nicht mehrmals) verbinden
+    .LINK
+        Aktuell gibt es noch keine Online-Hilfe
+    .EXAMPLE
+        SL-Ausgabe "Das ist ein Test!" Red -NoNewLine
+        Gibt den String "Das ist ein Test!" in roter Schriftfarbe und ohne die Erzeugung einer neuen Zeile aus
+        SL-Ausgabe $var Green
+        Gibt den Wert der Variable $var in grüner Schriftfarbe aus und erzeugt eine neue Zeilse
+    #>
     [CmdletBinding()]
     param(
 
@@ -140,22 +140,22 @@ function Ausgabe {
 
 #Funktionen für allgemeine Eingabe
 function Eingabe {
-    <#
-.SYNOPSIS
-    Ermöglicht eine Usereingabe in vereinfachter Schreibweise
-.DESCRIPTION
-    Sobald viele Eingaben durch User gewünscht sind, kann diese Funktion den Zeitaufwand verringern und direkt den Vorangestellten Text mit einzufügen
-.NOTES
-    Kein automatisches Einfügen von Doppelpunkten. Hiermit lassen sich auch farbige Prompts vor eine Eingabe voranstellen
-.LINK
-    Aktuell gibt es keine Online-Hilfe
-.EXAMPLE
-    $MeineVariable = SL-Eingabe "Bitte geben Sie etwas ein: " Green -Secure
-    Erzeugt eine Usereingabe mit vorangestelltem Text in grüner Textfarbe und Maskierung des Inputs (*)
-.EXAMPLE
-    $MeineVariable = SL-Eingabe "Bitte geben Sie etwas ein: "
-    Erzeugt eine Usereingabe mit vorangestelltem Text
-#>
+        <#
+    .SYNOPSIS
+        Ermöglicht eine Usereingabe in vereinfachter Schreibweise
+    .DESCRIPTION
+        Sobald viele Eingaben durch User gewünscht sind, kann diese Funktion den Zeitaufwand verringern und direkt den Vorangestellten Text mit einzufügen
+    .NOTES
+        Kein automatisches Einfügen von Doppelpunkten. Hiermit lassen sich auch farbige Prompts vor eine Eingabe voranstellen
+    .LINK
+        Aktuell gibt es keine Online-Hilfe
+    .EXAMPLE
+        $MeineVariable = SL-Eingabe "Bitte geben Sie etwas ein: " Green -Secure
+        Erzeugt eine Usereingabe mit vorangestelltem Text in grüner Textfarbe und Maskierung des Inputs (*)
+    .EXAMPLE
+        $MeineVariable = SL-Eingabe "Bitte geben Sie etwas ein: "
+        Erzeugt eine Usereingabe mit vorangestelltem Text
+    #>
     [CmdletBinding()]
     param (
         [Parameter(Position = 0, Mandatory = $true)]
@@ -678,28 +678,23 @@ function Connect {
    )
 
 
-    function InstallCloudModules{
-        Install-Module AzureAD, MicrosoftTeams, MsOnline, ExchangeOnlineManagement -Force
-    }
-    
-    
+   
+
    switch ($Service) {
-    M365 {
-        Import-Module AzureAD
-        Import-Module msolservice
-        Connect-MsolService
-    }
+   
     AzureAD {
+        Install-Module AzureAD -force
         Import-Module AzureAD
-        Import-Module msolservice
         Connect-AzureAD
      }
     TeamsAdmin { 
+        Install-Module MicrosoftTeams
         Import-Module MicrosoftTeams
         Connect-MicrosoftTeams
     }
     ExOnline {
-        Import-Module ExcahngeOnlineManagement
+        Install-Module ExchangeOnlineManagement
+        Import-Module ExchangeOnlineManagement
         Connect-ExchangeOnline 
      }
    }
@@ -891,18 +886,18 @@ function ADController {
 
 #Willkommenstext wird ausgegeben, in dem die allgemeinen Teilmodule aufgelistet und erklärt werden
 function ModuleStarted {
-    <#
-.SYNOPSIS
-    Diese Funktion dient lediglich für den Begrüßungstext 
-.DESCRIPTION
-    Hier werden die einzelnen Teilmodule und deren groben Funktionsweise aufgelistet.
-.NOTES
-    Kein Userinput möglich und keine weitere Funktion vorhanden
-.LINK
-    Keine Online-Hilfe verfügbar
-.EXAMPLE
-    keine Beispiele
-#>
+        <#
+    .SYNOPSIS
+        Diese Funktion dient lediglich für den Begrüßungstext 
+    .DESCRIPTION
+        Hier werden die einzelnen Teilmodule und deren groben Funktionsweise aufgelistet.
+    .NOTES
+        Kein Userinput möglich und keine weitere Funktion vorhanden
+    .LINK
+        Keine Online-Hilfe verfügbar
+    .EXAMPLE
+        keine Beispiele
+    #>
     Clear-Host
     Ausgabe "---------------------------------" Red
     Ausgabe "-----Willkommen zur SLShell!-----" Red
