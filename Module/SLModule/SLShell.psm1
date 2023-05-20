@@ -586,6 +586,19 @@ function Netdoc {
 }
 
 function Utilization {
+    <#
+    .SYNOPSIS
+        Dieses Teilmodul zeigt Ram und CPU auslastung und die belastetsten Prozesse
+    .EXAMPLE
+        SL-Utilization
+        Listet die Prozesse von RAM und CPU auf
+    .EXAMPLE
+        SL-Utilization -Value RAM
+        SL-Utilization CPU
+        Listet die Prozesse der Teilbereiche auf
+    #>
+    
+    
     [CmdletBinding()]
     param (
         [Parameter()]
