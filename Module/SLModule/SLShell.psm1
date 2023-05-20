@@ -662,18 +662,47 @@ function Utilization {
 function Connect {
     <#
    .SYNOPSIS
-    A short one-line action-based description, e.g. 'Tests if a function is valid'
+    Verbindet zu verschiedenen Cloud-Services (M365, Teams-Admin, ExOnline, AzureAD)
    .DESCRIPTION
-    A longer description of the function, its purpose, common use cases, etc.
-   .NOTES
-    Information or caveats about the function e.g. 'This function is not supported in Linux'
-   .LINK
-    Specify a URI to a help page, this will show when Get-Help -Online is used.
+    Verbindung in die Cloud-Services können hiermit aufgebaut werden und anschließend mit den gestarteten Connections weitergearbeitet
    .EXAMPLE
-    Test-MyTestFunction -Verbose
-    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    SL-Connect -Service AzureAD
+    Baut eine Verbindung zu AzureAD Powershell auf
    #>
-   
+   [CmdletBinding()]
+   param (
+       [Parameter(Position = 0, Mandatory = $true)]
+       [String]
+       [ValidateSet('AzureAD', 'TeamsAdmin', 'ExOnline')]
+       $Service
+   )
+
+
+    function InstallCloudModules{
+        Install-Module AzureAD, MicrosoftTeams, MsOnline, ExchangeOnlineManagement -Force
+    }
+    
+    
+   switch ($Service) {
+    M365 {
+        Import-Module AzureAD
+        Import-Module msolservice
+        Connect-MsolService
+    }
+    AzureAD {
+        Import-Module AzureAD
+        Import-Module msolservice
+        Connect-AzureAD
+     }
+    TeamsAdmin { 
+        Import-Module MicrosoftTeams
+        Connect-MicrosoftTeams
+    }
+    ExOnline {
+        Import-Module ExcahngeOnlineManagement
+        Connect-ExchangeOnline 
+     }
+   }
     
 }
 
