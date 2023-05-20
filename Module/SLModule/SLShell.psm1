@@ -17,20 +17,20 @@ Sl-Cleanup:
 - Papierkorb wird geleert und temp-files gelöscht -> erledigt
 
 SL-Netdoc: 
-- Ping 
-- Ping mit Port
-- tracert
-- nslookup in beide Richtungen
-- Ping bis unterbrochen wird
+- Ping  -> erledigt
+- Ping mit Port -> erledigt
+- tracert -> erledigt
+- nslookup in beide Richtungen -> erledigt
+- Ping bis unterbrochen wird -> erledigt
+
+SL-Utilization
+- CPUintensive / RAMintensive Prozesse auflisten (Get-Process | solrt cpu -descending | select -first 10)
+- ServiceOverview
 
 SL-Connect:
 - M365
 - AzureAD
 - ExchangeOnline
-
-SL-Utilization
-- CPUintensive / RAMintensive Prozesse auflisten (Get-Process | solrt cpu -descending | select -first 10)
-- ServiceOverview
 
 SL-ExoDoc:
 - Domains auslesen
@@ -484,89 +484,6 @@ function Cleanup {
     Ausgabe "Cleanup wurde durchgefuehrt! Papierkorp ist geleert und Temporäre Dateien wurden geloescht!"
 }
 
-#Verbindet zu verschiedenen Cloud-Services (M365, Teams-Admin, ExOnline, AzureAD)
-function Connect {
-    <#
-   .SYNOPSIS
-    A short one-line action-based description, e.g. 'Tests if a function is valid'
-   .DESCRIPTION
-    A longer description of the function, its purpose, common use cases, etc.
-   .NOTES
-    Information or caveats about the function e.g. 'This function is not supported in Linux'
-   .LINK
-    Specify a URI to a help page, this will show when Get-Help -Online is used.
-   .EXAMPLE
-    Test-MyTestFunction -Verbose
-    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
-   #>
-   
-    
-}
-
-#Hilft bei verschiedenen Tätigkeiten und der Fehlerbehebung von Exchange Online
-function ExoDoc {
-    <#
-    .SYNOPSIS
-        A short one-line action-based description, e.g. 'Tests if a function is valid'
-    .DESCRIPTION
-        A longer description of the function, its purpose, common use cases, etc.
-    .NOTES
-        Information or caveats about the function e.g. 'This function is not supported in Linux'
-    .LINK
-        Specify a URI to a help page, this will show when Get-Help -Online is used.
-    .EXAMPLE
-        Test-MyTestFunction -Verbose
-        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
-    #>
-}
-
-#Installiert Anwendungen / Apps
-function Install {
-    <#
-    .SYNOPSIS
-        A short one-line action-based description, e.g. 'Tests if a function is valid'
-    .DESCRIPTION
-        A longer description of the function, its purpose, common use cases, etc.
-    .NOTES
-        Information or caveats about the function e.g. 'This function is not supported in Linux'
-    .LINK
-        Specify a URI to a help page, this will show when Get-Help -Online is used.
-    .EXAMPLE
-        Test-MyTestFunction -Verbose
-        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
-    #>
-    
-    
-    Ausgabe "Waehle die zu installierende Software aus!" Green
-
-
-}
-
-#Entfernt Anwendungen / Apps und Dienste
-function Remove {
-    <#
-    .SYNOPSIS
-        A short one-line action-based description, e.g. 'Tests if a function is valid'
-    .DESCRIPTION
-        A longer description of the function, its purpose, common use cases, etc.
-    .NOTES
-        Information or caveats about the function e.g. 'This function is not supported in Linux'
-    .LINK
-        Specify a URI to a help page, this will show when Get-Help -Online is used.
-    .EXAMPLE
-        Test-MyTestFunction -Verbose
-        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
-    #>
-    
-    
-    
-    Ausgabe "Waehle die zu deinstallierende Software aus!" Green
-    
-    function RemoveServerEye {
-        Ausgabe "Server-Eye wird vollstaendig entfernt..."
-    }
-}
-
 #Hilft bei der Standard-Netzwerk-Fehlerbehebung
 function Netdoc {
     <#
@@ -666,6 +583,140 @@ function Netdoc {
     }
    
     
+}
+
+function Utilization {
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [String]
+        [ValidateSet('CPU', 'RAM')]
+        $Value
+    )
+
+
+    function Ram-Util {
+        $Computer = Get-WmiObject -Class win32_operatingsystem
+        $MemoryUsage = ((($Computer.TotalVisibleMemorySize - $Computer.FreePhysicalMemory) * 100) / $Computer.TotalVisibleMemorySize)
+        Ausgabe "Aktuell verwendeter Speicher: " -NoNewLine
+        Ausgabe ([System.Math]::Ceiling($MemoryUsage)) Cyan -NoNewLine
+        Ausgabe "%" Cyan
+
+        Get-WmiObject WIN32_PROCESS | Sort-Object -Property ws -Descending | Select-Object -first 5 processname, @{Name = "Mem Usage(MB)"; Expression = { [math]::round($_.ws / 1mb) } } | Out-String
+        
+    }
+
+    function CPU-Util {
+
+        $CPUUsage = (Get-WmiObject -Class Win32_Processor).LoadPercentage
+        Ausgabe "Aktuell verwendete CPU: " -NoNewLine
+        Ausgabe $CPUUsage Cyan -NoNewLine
+        Ausgabe "%" Cyan
+        Ausgabe " "
+        Get-Process | Sort-Object CPU -Descending| Select-Object -first 5 ProcessName, CPU, WS | Out-String
+        
+    }
+
+
+    switch ($Value) {
+        CPU { 
+            CPU-Util
+        }
+        RAM {
+
+            Ram-Util
+        }
+        Default {
+            Ausgabe "---CPU---" Cyan
+            CPU-Util
+            Ausgabe "---RAM---" Cyan
+            Ram-Util
+        }
+    }
+    
+}
+
+#Verbindet zu verschiedenen Cloud-Services (M365, Teams-Admin, ExOnline, AzureAD)
+function Connect {
+    <#
+   .SYNOPSIS
+    A short one-line action-based description, e.g. 'Tests if a function is valid'
+   .DESCRIPTION
+    A longer description of the function, its purpose, common use cases, etc.
+   .NOTES
+    Information or caveats about the function e.g. 'This function is not supported in Linux'
+   .LINK
+    Specify a URI to a help page, this will show when Get-Help -Online is used.
+   .EXAMPLE
+    Test-MyTestFunction -Verbose
+    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+   #>
+   
+    
+}
+
+#Hilft bei verschiedenen Tätigkeiten und der Fehlerbehebung von Exchange Online
+function ExoDoc {
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+}
+
+#Installiert Anwendungen / Apps
+function Install {
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+    Ausgabe "Waehle die zu installierende Software aus!" Green
+
+
+}
+
+#Entfernt Anwendungen / Apps und Dienste
+function Remove {
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+    
+    Ausgabe "Waehle die zu deinstallierende Software aus!" Green
+    
+    function RemoveServerEye {
+        Ausgabe "Server-Eye wird vollstaendig entfernt..."
+    }
 }
 
 #Deployed Standards für Server(VMs) und Clients
@@ -812,16 +863,18 @@ function ModuleStarted {
     Ausgabe " - Gathert alle wichtigen Informationen zur Dokumentation in IT-Glue" Green
     Ausgabe "SL-Cleanup" Cyan -NoNewLine 
     Ausgabe " - Bereinigt PCs und Server" Green
-    Ausgabe "SL-Install" Cyan -NoNewLine
-    Ausgabe " - Installiert verschiedene Anwendungen" Green
-    Ausgabe "SL-Remove" Cyan -NoNewLine
-    Ausgabe " - Deinstalliert verschiedene Anwendungen, Features etc." Green
     Ausgabe "SL-Netdoc" Cyan -NoNewLine
     Ausgabe " - Tolls fuer Basic NetzwerkTroubleshooting" Green
+    Ausgabe "Sl-Utilization" Cyan -NoNewLine
+    Ausgabe " - gibt eine grobe Übersicht über die Auslastung des Systems" Green
     Ausgabe "SL-Connect" Cyan -NoNewLine 
     Ausgabe " - Baut Verbindungen zu verschiedenen CloudShells auf (M365, AzureAD, ExOnline, Servereye, Datto etc.)" Green
     Ausgabe "SL-ExoDoc" Cyan -NoNewLine
     Ausgabe " - Grundsätzliche Anpassungen und Informationsbeschaffung bei ExchangeOnline-Servern" Green
+    Ausgabe "SL-Install" Cyan -NoNewLine
+    Ausgabe " - Installiert verschiedene Anwendungen" Green
+    Ausgabe "SL-Remove" Cyan -NoNewLine
+    Ausgabe " - Deinstalliert verschiedene Anwendungen, Features etc." Green
     Ausgabe "SL-Standard" Cyan -NoNewLine
     Ausgabe " - Setzt Basic Settings fuer Clients und Server" Green
     Ausgabe "SL-SQL" Cyan -NoNewLine
