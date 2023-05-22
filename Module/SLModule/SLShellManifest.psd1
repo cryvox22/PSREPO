@@ -1,7 +1,7 @@
 @{
     RootModule           = 'SLShell.psm1'
 
-    ModuleVersion        = '0.0.1'
+    ModuleVersion        = '0.0.5'
 
     CompanyName          = 'SL Service & Verwaltungs GmbH'
 

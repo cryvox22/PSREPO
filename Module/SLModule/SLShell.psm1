@@ -92,7 +92,7 @@ SL-ADController:
 
 #Funktion für vereinfachte Ausgabe mit verkürzter Syntax
 function Ausgabe {
-        <#
+    <#
     .SYNOPSIS
         Eine Funktion für die vereinfachte Schreibweise einer Ausgabe
     .DESCRIPTION
@@ -140,7 +140,7 @@ function Ausgabe {
 
 #Funktionen für allgemeine Eingabe
 function Eingabe {
-        <#
+    <#
     .SYNOPSIS
         Ermöglicht eine Usereingabe in vereinfachter Schreibweise
     .DESCRIPTION
@@ -635,7 +635,7 @@ function Utilization {
         Ausgabe $CPUUsage Cyan -NoNewLine
         Ausgabe "%" Cyan
         Ausgabe " "
-        Get-Process | Sort-Object CPU -Descending| Select-Object -first $Counter ProcessName, CPU, WS | Out-String
+        Get-Process | Sort-Object CPU -Descending | Select-Object -first $Counter ProcessName, CPU, WS | Out-String
         
     }
 
@@ -669,35 +669,35 @@ function Connect {
     SL-Connect -Service AzureAD
     Baut eine Verbindung zu AzureAD Powershell auf
    #>
-   [CmdletBinding()]
-   param (
-       [Parameter(Position = 0, Mandatory = $true)]
-       [String]
-       [ValidateSet('AzureAD', 'TeamsAdmin', 'ExOnline')]
-       $Service
-   )
+    [CmdletBinding()]
+    param (
+        [Parameter(Position = 0, Mandatory = $true)]
+        [String]
+        [ValidateSet('AzureAD', 'TeamsAdmin', 'ExOnline')]
+        $Service
+    )
 
 
    
 
-   switch ($Service) {
+    switch ($Service) {
    
-    AzureAD {
-        Install-Module AzureAD -force
-        Import-Module AzureAD
-        Connect-AzureAD
-     }
-    TeamsAdmin { 
-        Install-Module MicrosoftTeams
-        Import-Module MicrosoftTeams
-        Connect-MicrosoftTeams
+        AzureAD {
+            Install-Module AzureAD -force
+            Import-Module AzureAD
+            Connect-AzureAD
+        }
+        TeamsAdmin { 
+            Install-Module MicrosoftTeams
+            Import-Module MicrosoftTeams
+            Connect-MicrosoftTeams
+        }
+        ExOnline {
+            Install-Module ExchangeOnlineManagement
+            Import-Module ExchangeOnlineManagement
+            Connect-ExchangeOnline 
+        }
     }
-    ExOnline {
-        Install-Module ExchangeOnlineManagement
-        Import-Module ExchangeOnlineManagement
-        Connect-ExchangeOnline 
-     }
-   }
     
 }
 
@@ -718,11 +718,33 @@ function ExoDoc {
     #>
     [CmdletBinding()]
     param (
-        [Parameter()]
-        [TypeName]
-        $ParameterName
     )
+
+    begin {
+        Ausgabe "Willkommen beim ExDoc - nachfolgend alle möglichen Befehle:"
+
+
+    }
+    process {
+        $x=0 
+        do {
+
+
+            $x++
+            Ausgabe "ich mache was $x"
+
+
+
+            $Weiter = Eingabe "Weiteren Vorgang durchführen? (J/j)" Blue
+        }while ($Weiter -eq "J" -or $Weiter -eq "j")
+
+    }
+
+    end {
+    
+    }
 }
+
 
 #Installiert Anwendungen / Apps
 function Install {
@@ -892,7 +914,7 @@ function ADController {
 
 #Willkommenstext wird ausgegeben, in dem die allgemeinen Teilmodule aufgelistet und erklärt werden
 function ModuleStarted {
-        <#
+    <#
     .SYNOPSIS
         Diese Funktion dient lediglich für den Begrüßungstext 
     .DESCRIPTION
