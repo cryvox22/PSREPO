@@ -316,10 +316,12 @@ function Doc {
             Ausgabe "Festplatten: "
             foreach ($item in $Disks) {
                 $Diskspace = $item.Size / 1073741824
-                Ausgabe $item.DeviceID -NoNewLine
-                Ausgabe " " -NoNewLine
-                Ausgabe ([System.Math]::Ceiling($Diskspace)) Cyan -NoNewLine
-                Ausgabe " GB" Cyan
+                if ($Diskspace -gt 0) {
+                    Ausgabe $item.DeviceID -NoNewLine
+                    Ausgabe " " -NoNewLine
+                    Ausgabe ([System.Math]::Ceiling($Diskspace)) Cyan -NoNewLine
+                    Ausgabe " GB" Cyan
+                }
             }
             
         }
