@@ -331,12 +331,12 @@ function Doc {
         Get-Memory
         Ausgabe "Grafikkarte: " -NoNewLine
         $PCGPU = Get-Gpu
-        $x=0
-        foreach ($item in $PCGPU){
+        $x = 0
+        foreach ($item in $PCGPU) {
             
             Ausgabe $item Cyan -NoNewLine
             $x++
-            if($x -gt 0 -and $x -clt 2){
+            if ($x -gt 0 -and $x -clt 2) {
                 Ausgabe " || " Cyan -NoNewLine
             }
         }
@@ -730,19 +730,19 @@ function ExoDoc {
     #>       
         
             
-       begin{ 
-            Ausgabe "------------------------------------------------------------" Cyan
-            Ausgabe "Willkommen beim ExoDoc - nachfolgend alle möglichen Befehle:" Cyan
-            Ausgabe "------------------------------------------------------------" Cyan
-            Ausgabe " "
-            Ausgabe "1. User auslesen" Yellow
-            Ausgabe "2. MailboxBerechtigungen auslesen und setzen" Yellow
-            Ausgabe "3. MailboxKalenderBerechtigungen auslesen und setzten" Yellow
-            Ausgabe "4. Mailboxgröße auslesen" Yellow
-            Ausgabe "5. Mailbox anlegen (freigeben)" Yellow
-            SL-Connect ExOnline
-       }
-       process {
+    begin { 
+        Ausgabe "------------------------------------------------------------" Cyan
+        Ausgabe "Willkommen beim ExoDoc - nachfolgend alle möglichen Befehle:" Cyan
+        Ausgabe "------------------------------------------------------------" Cyan
+        Ausgabe " "
+        Ausgabe "1. User auslesen" Yellow
+        Ausgabe "2. MailboxBerechtigungen auslesen und setzen" Yellow
+        Ausgabe "3. MailboxKalenderBerechtigungen auslesen und setzten" Yellow
+        Ausgabe "4. Mailboxgröße auslesen" Yellow
+        Ausgabe "5. Mailbox anlegen (freigeben)" Yellow
+        SL-Connect ExOnline
+    }
+    process {
 
         function MailboxFolderPerm {
             [CmdletBinding()]
@@ -772,15 +772,13 @@ function ExoDoc {
                 1 {  }
                 2 {  }
                 3 { 
-                    if(Get-MailboxFolderPermission -Identity p.gentner@sl-sv.de:\Calender)
-                    {
+                    if (Get-MailboxFolderPermission -Identity p.gentner@sl-sv.de:\Calender) {
                         Ausgabe "Existiert" Green
                     }
-                    else
-                    {
+                    else {
                         Ausgabe "Existiert nicht!" Red
                     }
-                 }
+                }
                 4 {  }
                 5 {  }
                 Default {}
@@ -794,7 +792,7 @@ function ExoDoc {
         }while ($Weiter -eq "J" -or $Weiter -eq "j")
     }
 
-    end{
+    end {
 
     }
 }
