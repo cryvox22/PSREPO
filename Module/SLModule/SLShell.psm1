@@ -1,4 +1,6 @@
 <#
+hilfreiche Links: https://www.comparitech.com/net-admin/powershell-cheat-sheet/
+
 ToDo's für die Untermodule: 
 
 Allgemein: 
@@ -688,12 +690,12 @@ function Connect {
             Connect-AzureAD
         }
         TeamsAdmin { 
-            Install-Module MicrosoftTeams
+            Install-Module MicrosoftTeams -force
             Import-Module MicrosoftTeams
             Connect-MicrosoftTeams
         }
         ExOnline {
-            Install-Module ExchangeOnlineManagement
+            Install-Module ExchangeOnlineManagement -force
             Import-Module ExchangeOnlineManagement
             Connect-ExchangeOnline 
         }
@@ -715,35 +717,78 @@ function ExoDoc {
     .EXAMPLE
         Test-MyTestFunction -Verbose
         Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
-    #>
-    [CmdletBinding()]
-    param (
-    )
+    #>       
+        
+            
+       begin{ 
+            Ausgabe "------------------------------------------------------------" Cyan
+            Ausgabe "Willkommen beim ExoDoc - nachfolgend alle möglichen Befehle:" Cyan
+            Ausgabe "------------------------------------------------------------" Cyan
+            Ausgabe " "
+            Ausgabe "1. User auslesen" Yellow
+            Ausgabe "2. MailboxBerechtigungen auslesen und setzen" Yellow
+            Ausgabe "3. MailboxKalenderBerechtigungen auslesen und setzten" Yellow
+            Ausgabe "4. Mailboxgröße auslesen" Yellow
+            Ausgabe "5. Mailbox anlegen (freigeben)" Yellow
+            SL-Connect ExOnline
+       }
+       process {
 
-    begin {
-        Ausgabe "Willkommen beim ExDoc - nachfolgend alle möglichen Befehle:"
+        function MailboxFolderPerm {
+            [CmdletBinding()]
+            param (
+                [Parameter(Mandatory = $false, Position = 0)]
+                [string]
+                $MailboxIdentity,
+
+                [Parameter(Mandatory = $false, Position = 1)]
+                [string]
+                $AccessUser,
+
+                [Parameter(Mandatory = $false, Position = 2)]
+                [string]
+                [ValidateSet('Owner', 'Editor', 'Read-Only', 'Viewer', 'Reviewer')]
+                $AccessRight
+            )
+        }
 
 
-    }
-    process {
-        $x=0 
+
+
+
+
         do {
+            switch ($ExoDocSelect) {
+                1 {  }
+                2 {  }
+                3 { 
+                    if(Get-MailboxFolderPermission -Identity p.gentner@sl-sv.de:\Calender)
+                    {
+                        Ausgabe "Existiert" Green
+                    }
+                    else
+                    {
+                        Ausgabe "Existiert nicht!" Red
+                    }
+                 }
+                4 {  }
+                5 {  }
+                Default {}
+            }
 
-
-            $x++
-            Ausgabe "ich mache was $x"
+            
 
 
 
             $Weiter = Eingabe "Weiteren Vorgang durchführen? (J/j)" Blue
         }while ($Weiter -eq "J" -or $Weiter -eq "j")
-
     }
 
-    end {
-    
+    end{
+
     }
 }
+
 
 
 #Installiert Anwendungen / Apps
