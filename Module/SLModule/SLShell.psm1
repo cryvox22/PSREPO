@@ -330,7 +330,17 @@ function Doc {
         Ausgabe (Get-Cpu) Cyan
         Get-Memory
         Ausgabe "Grafikkarte: " -NoNewLine
-        Ausgabe (Get-Gpu) Cyan
+        $PCGPU = Get-Gpu
+        $x=0
+        foreach ($item in $PCGPU){
+            
+            Ausgabe $item Cyan -NoNewLine
+            $x++
+            if($x -gt 0 -and $x -clt 2){
+                Ausgabe " || " Cyan -NoNewLine
+            }
+        }
+        Ausgabe " "
         Get-Disks  
 
     }
