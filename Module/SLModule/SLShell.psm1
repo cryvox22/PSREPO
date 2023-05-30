@@ -92,7 +92,13 @@ SL-ADController:
 - neuen User/Gruppen erstellen
 - User und Gruppen auslesen und export
 - Standard OUs, Gruppen und User anlegen und erstellen
+
+SL-Maintanence: 
+- ServerShutdown / Reboot Schedule
+
 #>
+
+
 
 #Funktion für vereinfachte Ausgabe mit verkürzter Syntax
 function Ausgabe {
@@ -371,8 +377,6 @@ function Doc {
         Ausgabe (get-WindowsKey) Yellow
         Ausgabe "-------------------------------------------" Green
     }
-
-   
 
     If ($Value) {
         switch ($Value) {
@@ -801,8 +805,6 @@ function ExoDoc {
     }
 }
 
-
-
 #Installiert Anwendungen / Apps
 function Install {
     <#
@@ -969,6 +971,41 @@ function ADController {
     
 }
 
+#Für Standard-Wartungsarbeiten wie Reboots / Shutdowns
+function Maintanence {
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+    [CmdletBinding()]
+    param (
+        
+    )
+    
+    begin {
+        
+    }
+    
+    process {
+        
+    }
+    
+    end {
+        
+    }
+}
+
 #Willkommenstext wird ausgegeben, in dem die allgemeinen Teilmodule aufgelistet und erklärt werden
 function ModuleStarted {
     <#
@@ -1018,6 +1055,8 @@ function ModuleStarted {
     Ausgabe " - Informationsbeschaffung, Anpassung und Erstellung bei Netzwerkfreigaben" Green
     Ausgabe "SL-ADController" Cyan -NoNewLine
     Ausgabe " - Informtaionsbeschaffung, Anpassung und Konfiguration von ActiveDirectory Domänen" Green
+    Ausgabe "SL-Maintanence" Cyan -NoNewLine
+    Ausgabe " - Wartungsarbeiten wie Reboots / Shutdowns durchführen oder planen" Green
 }
 
 #Startet die Ausgabe für den Willkommenstext + Erklärung
