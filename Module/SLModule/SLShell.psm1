@@ -1,5 +1,7 @@
 <#
-hilfreiche Links: https://www.comparitech.com/net-admin/powershell-cheat-sheet/
+hilfreiche Links: 
+- https://www.comparitech.com/net-admin/powershell-cheat-sheet/
+- https://dfinke.github.io/powershellai,%20powershell,%20chatgpt,%20windows%20terminal/2023/03/24/How-to-Set-up-and-Use-ChatGPT-in-Windows-Terminal-using-PowerShellAI.html 
 
 ToDo's für die Untermodule: 
 
@@ -41,7 +43,7 @@ SL-ExoDoc: https://learn.microsoft.com/en-us/powershell/exchange/exchange-online
 - Kalenderberechtigungen auslesen und setzten
 - Postfachberechtigungen auslesen und setzen
 
-SL-Install:
+SL-Install: https://learn.microsoft.com/de-de/windows/package-manager/winget/install
 - TeamViewer
 - M365
 - PowerShell7
