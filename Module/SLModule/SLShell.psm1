@@ -97,6 +97,9 @@ SL-ADController:
 SL-Maintanence: 
 - ServerShutdown / Reboot Schedule
 
+PowerShell-AI:
+- 
+
 #>
 
 
