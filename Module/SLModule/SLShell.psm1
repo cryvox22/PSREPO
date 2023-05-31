@@ -52,6 +52,7 @@ SL-Install: https://learn.microsoft.com/de-de/windows/package-manager/winget/ins
 
 SL-Remove:
 - ServerEye
+- Datto
 
 SL-Standard:
 - SMBv1 deaktivieren
