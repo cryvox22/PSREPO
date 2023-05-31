@@ -26,6 +26,9 @@ SL-Netdoc:
 - tracert -> erledigt
 - nslookup in beide Richtungen -> erledigt
 - Ping bis unterbrochen wird -> erledigt
+- refresh dhcp ip
+- clear / flushdns
+
 
 SL-Utilization
 - CPUintensive / RAMintensive Prozesse auflisten (Get-Process | solrt cpu -descending | select -first 10) -> erledigt
