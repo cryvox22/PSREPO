@@ -103,6 +103,10 @@ SL-Maintanence:
 PowerShell-AI:
 - 
 
+SL-RemoteShell:
+- Remoteshell aufbauen
+- ggf. Problembehebung bzgl. TrustedHosts (nondomain)
+
 #>
 
 
