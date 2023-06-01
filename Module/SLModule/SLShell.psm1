@@ -875,6 +875,28 @@ function Standard {
         Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
     #>
     
+    function EnableWinrm{
+        [CmdletBinding()]
+        param (
+            [Parameter(Mandatory = $true, Position = 0)]
+            [string]
+            $Servername,
+        
+            [Parameter(Mandatory = $false, Position = 1)]
+            [Switch]
+            $NonDomain
+        )
+            Enable-PSRemoting -Force
+            winrm quickconfig
+        
+            if($NonDomain){
+                Set-Item WSMAN:\Localhost\Client\TrustedHosts -Value $Servername -Force    
+                Get-Item WSMAN:\Localhost\Client\TrustedHosts 
+            }
+            
+        
+        
+        }
     
     
     Ausgabe "Welche Standards willst du ausrollen?!" Green

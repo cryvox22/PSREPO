@@ -12,10 +12,16 @@ function Reboot-Server {
     
     process {
         $UserInput
-        $WerbasServer = "CLIENT01W10"
-        $HyperVHost = "HOST01"
-        $user = ".\administrator"
-        $WerbasSession = New-PSSession -Computer $WerbasServer
+        $WerbasServer = "ISM-V"
+        $HyperVHost = "Hyper-ISM"
+        $WerbasUser = "ISM-V\administrator"
+        $HyperISMUser = "Hyper-ISM\administrator"
+        $WerbasCred = Get-Credential -UserName $WerbasUser -Message 'Bitte Passwort eingeben'
+        $HyperCred = Get-Credential -UserName $HyperISMUser -Message 'Bitte Passwort eingeben'
+        $WerbasSession = New-PSSession -Computer $WerbasServer -Credential $WerbasCred
+        $HyperISMSession = New-PSSession -ComputerName $HyperVHost -Credential $HyperCred
+
+
         Write-Host " "
         Write-Host "---------------------------------------------------------------" -ForegroundColor Cyan
         Write-Host "Welchen Server wollen Sie neu starten?" -ForegroundColor Cyan
@@ -30,7 +36,7 @@ function Reboot-Server {
 
         switch ($UserInput) {
             1 { 
-                New-PSSession -Session $WerbasSession -Credential $user
+                Enter-PSSession -Session $HyperISMSession
                 Write-Host "Werbas-Server wird nun heruntergefahren!" -ForegroundColor Red
                 Restart-VM $WerbasServer -Wait -Force
                 if(Test-Connection $WerbasServer){
@@ -41,7 +47,7 @@ function Reboot-Server {
                 }
              }
             2 { 
-                New-PSSession -Session $WerbasSession -Credential $user
+                Enter-PSSession -Session $HyperISMSession
                 Write-Host "Server-Reboot wird gestartet!" -ForegroundColor Red
                 Write-Host "Werbas-Server VM wird heruntergefahren..." -ForegroundColor Red
                 Stop-VM -Name $WerbasServer -Force
@@ -49,11 +55,11 @@ function Reboot-Server {
                     Write-Host "Werbas-Server wurde heruntergefahren - Server-Reboot des Hosts wird gestartet!" -ForegroundColor Red
                     Restart-Computer -ComputerName $HyperVHost -Wait
                     if(Test-Connection $HyperVHost){
+                        Enter-PSSession -Session $HyperISMSession
                         Start-VM $WerbasServer
                         Write-Host "Host wurde neugestartet und Werbas-Server sollte in spätestens 10 Minuten wieder erreichbar sein!" -ForegroundColor Green
                         Start-Sleep -Seconds 20
                         if(Test-Connection $WerbasServer){
-                        New-PSSession -Session $WerbasSession -Credential $user
                         Write-Host "Werbas-Server wurde erfolgreich wieder gestartet!" -ForegroundColor Green
                         }
                     }
