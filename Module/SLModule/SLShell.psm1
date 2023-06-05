@@ -882,7 +882,7 @@ function Standard {
         Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
     #>
     
-    function EnableWinrm{
+    function EnableWinrm {
         [CmdletBinding()]
         param (
             [Parameter(Mandatory = $true, Position = 0)]
@@ -893,17 +893,17 @@ function Standard {
             [Switch]
             $NonDomain
         )
-            Enable-PSRemoting -Force
-            winrm quickconfig
+        Enable-PSRemoting -Force
+        winrm quickconfig
         
-            if($NonDomain){
-                Set-Item WSMAN:\Localhost\Client\TrustedHosts -Value $Servername -Force    
-                Get-Item WSMAN:\Localhost\Client\TrustedHosts 
-            }
+        if ($NonDomain) {
+            Set-Item WSMAN:\Localhost\Client\TrustedHosts -Value $Servername -Force    
+            Get-Item WSMAN:\Localhost\Client\TrustedHosts 
+        }
             
         
         
-        }
+    }
     
     
     Ausgabe "Welche Standards willst du ausrollen?!" Green
@@ -1042,6 +1042,77 @@ function Maintanence {
     }
 }
 
+#Scheduling von Reboots und Shutdowns
+function Maintanence {
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+    [CmdletBinding()]
+    param (
+        
+    )
+    
+    begin {
+        
+    }
+    
+    process {
+        
+    }
+    
+    end {
+        
+    }
+}
+
+
+#Für das Überprüfen von bestimmten Informationen
+function Checkup {
+    <#
+    .SYNOPSIS
+        A short one-line action-based description, e.g. 'Tests if a function is valid'
+    .DESCRIPTION
+        A longer description of the function, its purpose, common use cases, etc.
+    .NOTES
+        Information or caveats about the function e.g. 'This function is not supported in Linux'
+    .LINK
+        Specify a URI to a help page, this will show when Get-Help -Online is used.
+    .EXAMPLE
+        Test-MyTestFunction -Verbose
+        Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    #>
+    
+    
+    [CmdletBinding()]
+    param (
+        
+    )
+    
+    begin {
+        
+    }
+    
+    process {
+        
+    }
+    
+    end {
+        
+    }
+}
+
 #Willkommenstext wird ausgegeben, in dem die allgemeinen Teilmodule aufgelistet und erklärt werden
 function ModuleStarted {
     <#
@@ -1096,7 +1167,7 @@ function ModuleStarted {
     Ausgabe "SL-Remoteshell" Cyan -NoNewLine
     Ausgabe " - Aufbau von RemoteShell (PSSession)" Green
     Ausgabe "SL-Checkup" Cyan -NoNewLine
-    Ausgabe "Für den Checkup von bestimmten Informationen (z.B. .Net Version)"
+    Ausgabe " - Für den Checkup von bestimmten Informationen (z.B. .Net Version)" Green
 }
 
 #Startet die Ausgabe für den Willkommenstext + Erklärung
