@@ -107,6 +107,9 @@ SL-RemoteShell:
 - Remoteshell aufbauen
 - ggf. Problembehebung bzgl. TrustedHosts (nondomain)
 
+SL-Checkup
+- Check für .Net-Version
+
 #>
 
 
@@ -1090,6 +1093,10 @@ function ModuleStarted {
     Ausgabe " - Informtaionsbeschaffung, Anpassung und Konfiguration von ActiveDirectory Domänen" Green
     Ausgabe "SL-Maintanence" Cyan -NoNewLine
     Ausgabe " - Wartungsarbeiten wie Reboots / Shutdowns durchführen oder planen" Green
+    Ausgabe "SL-Remoteshell" Cyan -NoNewLine
+    Ausgabe " - Aufbau von RemoteShell (PSSession)" Green
+    Ausgabe "SL-Checkup" Cyan -NoNewLine
+    Ausgabe "Für den Checkup von bestimmten Informationen (z.B. .Net Version)"
 }
 
 #Startet die Ausgabe für den Willkommenstext + Erklärung
