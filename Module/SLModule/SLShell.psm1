@@ -20,16 +20,6 @@ SL-Doc:
 Sl-Cleanup: 
 - Papierkorb wird geleert und temp-files gelöscht -> erledigt
 
-SL-Netdoc: 
-- Ping  -> erledigt
-- Ping mit Port -> erledigt
-- tracert -> erledigt
-- nslookup in beide Richtungen -> erledigt
-- Ping bis unterbrochen wird -> erledigt
-- refresh dhcp ip
-- clear / flushdns
-
-
 SL-Utilization
 - CPUintensive / RAMintensive Prozesse auflisten (Get-Process | solrt cpu -descending | select -first 10) -> erledigt
 - ServiceOverview -> erledigt
@@ -38,6 +28,15 @@ SL-Connect: (noch keine Prüfung ob das Modul bereits installiert ist)
 - AzureAD -> erledigt
 - ExchangeOnline -> erledigt
 - MicrosoftTeams Admin -> erledigt
+
+SL-Netdoc: 
+- Ping  -> erledigt
+- Ping mit Port -> erledigt
+- tracert -> erledigt
+- nslookup in beide Richtungen -> erledigt
+- Ping bis unterbrochen wird -> erledigt
+- refresh dhcp ip
+- clear / flushdns
 
 SL-ExoDoc: https://learn.microsoft.com/en-us/powershell/exchange/exchange-online-powershell-v2?view=exchange-ps#updates-for-version-300-the-exo-v3-module
 - Domains auslesen
@@ -78,14 +77,16 @@ SL-Deploy:
 - DHCP
 - HyperV
 - Fileserver
-    - mit Freigaben
+- IIS
+- Sharepoint
 
 SL-HVMgmt
 - neue VMs
-- VMs auflisten und export
+- VMs auflisten und export (auch als Bulk)
 - VM auswählen und start, stop 
 - Snapshot erstellen
 - VM Specs auslesen
+- Berechtigung für eine spezifische Freigabe und eine spezifische Gruppe ausgeben
 
 SL-Fileshare:
 - Berechtigungen von Ordnern auslesen und export
@@ -95,13 +96,15 @@ SL-Fileshare:
 SL-ADController: 
 - neuen User/Gruppen erstellen
 - User und Gruppen auslesen und export
+- Anzahl User ausgeben
+- User ausgeben, die sich 60 Tage nicht mehr angemeldet haben
 - Standard OUs, Gruppen und User anlegen und erstellen
 
 SL-Maintanence: 
 - ServerShutdown / Reboot Schedule
 
 PowerShell-AI:
-- 
+- Fiktiver Text wird zu Befehlen
 
 SL-RemoteShell:
 - Remoteshell aufbauen
@@ -205,7 +208,7 @@ function Eingabe {
     
     return $InputVar
 }
-
+j
 #Vereinfachter Export von Daten
 function ExportData {
     [CmdletBinding()]
