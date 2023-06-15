@@ -18,4 +18,4 @@ Get-Content -Path .\usernames_unique.txt
 Get-Content -Path .\usernames_unique.txt | Measure-Object
 (Get-Content -Path .\usernames_unique.txt).count
 
-Compare-Object -ReferenceObject (Get-Content -Path .\usernames.txt) -DifferenceObject (Get-Content -Path .\usernames_unique.txt
+Compare-Object -ReferenceObject (Get-Content -Path .\usernames.txt) -DifferenceObject (Get-Content -Path .\usernames_unique.txt)
