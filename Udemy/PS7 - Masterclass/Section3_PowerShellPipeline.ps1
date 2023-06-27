@@ -49,3 +49,111 @@ $meinOneDriveFirma = $env:OneDriveCommercial
 $OneDrive = $env:OneDriveConsumer + '\Dokumente\Privat\09_Learning\Powershell\Udemy - Powershell7-Masterkurs\'
 Import-Csv $OneDrive\sample_manufacturer.csv, $OneDrive\sample_manufacturer_2.csv | Where-Object { $_.Manufacturer -eq 'Microsoft' -and $_.BiosVersion -like '13.*' -and $_.CanUpdate -eq 'true' } | Export-Csv $OneDrive\microsoft_13_canupdate.csv -NoTypeInformation
 Import-Csv 'C:\Users\p.gentner\OneDrive\Dokumente\Privat\09_Learning\Powershell\Udemy - Powershell7-Masterkurs\microsoft_13_canupdate.csv'
+
+
+
+
+#Klammern und Co
+(Get-Date).AddYears(-100) 
+#Code in runden Klammmern () wird sofort ausgefürt (also noch vor der kompletten Zeile)
+
+Get-Random -InputObject (1..45) -Count 6
+#Random-Numbers generieren
+
+If (Get-ChildItem C:\gibtesnicht -ErrorAction SilentlyContinue){
+    Write-Output 'Ordner da.'
+}
+else{
+    Write-Output 'Ordner nicht da.'
+}
+#Geschwungene Klammern werden dann ausgeführt, wenn sie an der Reihe sind (Skriptblöcke)
+
+
+#Spezialklammern und Anwendungen
+Get-Process [teams]*
+#Eckige Klammern sind für spezielle Zwecke zu verwenden (z.B. Arrays)
+
+$mail = "patrickgentner27@gmail.com"
+$split = $mail.Split('@')
+$split[0]
+#Auch in Powershell haben wir einen 0-basierten-Index
+
+Get-Process [a]*
+
+Get-Process [r-s]*
+
+$array = [array]('Peter','Margit')
+$array[0]
+
+[char[]](65..90)
+
+
+
+
+
+#Sort-Object // Select-Object
+
+Get-Process | Sort-Object CPU -Descending
+#Sortiert absteigend
+
+Get-Process | Select-Object CPU, Id, ProcessName
+#Wählt nur bestimmte Werte aus, die ausgegeen werden, verändert allerdings das Objekt nicht, sodass damit weitergearbeitet werden kann
+
+Get-Process | Select-Object CPU, Id, ProcessName -Last 3
+#Mit Parameter kann angepasst werden 
+
+
+Get-Process | Sort-Object CPU -Descending | Select-Object ProcessName, CPU -First 3
+#kann gemischt werden
+
+
+Get-Process | Get-Member
+Get-Process | Select-Object -Property *
+
+
+#Select-Object -ExpandProperty oder ().x: 
+
+$comp = Get-ADComputer -Filter * | Select-Object -Property Name
+Test-Connection -ComputerName $comp
+#Powershell versucht nicht die Names zu pingen sondern @{name=hostname} 
+
+
+#Die Lösung hier ist -ExpandProperty!
+$comp = Get-ADComputer -Filter * | Select-Object -ExpandProperty Name
+Test-Connection -ComputerName $comp
+
+#Alternative ist der Punkt
+$comp = (Get-ADComputer -Filter *).Name
+Test-Connection $comp
+
+
+#weiteres Beispiel
+$boot1 = Get-ComputerInfo | Select-Object OsLastBootUpTime
+$boot2 = Get-ComputerInfo | Select-Object -ExpandProperty OsLastBootUpTime
+$boot3 = (Get-ComputerInfo).OsLastBootUpTime
+(Get-Date) -$boot3
+
+
+
+
+#Custom Properties
+
+Get-CimInstance -Class Win32_PhysicalMemory | Select-Object Manufacturer, BankLabel, ConfiguredClockSpeed, SerialNumber, @{n="RAM"; e={[Math]::Round($_.Capacity/1GB)}} | Format-Table
+
+
+#Select-String
+'Hello', 'HELLO' | Select-String -Pattern 'HELLO' -CaseSensitive
+
+$Eventlogs = Get-WinEvent -LogName Application -MaxEvents 50 | Select-String -InputObject {$_.message} -Pattern 'Fehler'
+Write-Output $Eventlogs
+
+Select-String -Path C:\Windows\Panther\setupact.log -Pattern 'First Boot'
+
+
+#Limitierung der Pipe
+Get-ChildItem -Path C:\Temp\ -Directory | ForEach-Object {New-SmbShare -Name $_.Name -Path $_.FullName -FullAccess Everyone -Description Test}
+
+
+#Abschluss-Aufgabe Modul: 
+
+Get-ComputerInfo | Get-Member
