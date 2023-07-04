@@ -127,3 +127,17 @@ $player1.PlayLooping()
 Start-Sleep 10
 $Player1.Stop()
 #Erstellt ein Objekt und lässt mittels Methode einen Loop laufen und stoppen
+
+
+
+#Datentypen
+
+'Patrick'.GetType() #Zeichenkette
+(Get-Process).GetType() #Array
+(Get-Process explorer).GetType() #Prozess
+(Get-ADUser -Identity administrator).GetType() # ADUser
+
+
+
+
+#Strings manipulieren
