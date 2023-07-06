@@ -141,3 +141,34 @@ $Player1.Stop()
 
 
 #Strings manipulieren
+
+
+$name = "Patrick . Gentner @ outlook.de   "
+
+#$name | Get-Member
+
+
+#Ziel: patrickgentner@outlook.com
+
+
+$resultat = $name.Trim().Replace(' ', '').Replace('outlook.de', 'outlook.com').ToLower()
+
+#Wurden die letzten Zeichen mit Trim auch entfernt?
+
+if($name.Length -gt $resultat.Length){
+    Write-Host -ForegroundColor Cyan "Die Leerzeichen am Ende wurden ebenfalls entfernt!"
+    Write-Host -ForegroundColor Green $resultat " ist " $resultat.length " Zeichen lang!"
+}
+
+
+
+#Gegeben: patrick.gentner@outlook.com
+#Ziel:  Patrick Gentner
+
+
+$index = $resultat.IndexOf('@')
+$nameneu = $resultat.Substring(0, $index)
+$split = $nameneu.Split('.')
+$split -join ', ' #Exkurs -join
+
+$split[0].Substring(0,1).ToUpper() + $split[0].Substring(1) + ' ' +$split[1].Substring(0,1).ToUpper()+$split[1].Substring(1)
