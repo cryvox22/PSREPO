@@ -15,7 +15,7 @@ Get-Date | Get-Member                                           #Was kann man da
 
 'Patrick'.GetType()                      # Patrick ist eine Zeichenkette und kein Datum
 'Patrick' | Get-Member                   # Was kann man damit tun? 
-'patrick'.Substring(0,1).ToUpper()       # Das erste Zeichen aufrufen und in Großbuchstaben setzen
+'patrick'.Substring(0, 1).ToUpper()       # Das erste Zeichen aufrufen und in Großbuchstaben setzen
 'patrick'.AddDays(-21)                   # ?
 
 
@@ -24,9 +24,9 @@ Get-Date | Get-Member                                           #Was kann man da
 
 
 
-(Get-Date).Substring(0,2)               # Funktioniert nicht, da keine Zeichenkette
+(Get-Date).Substring(0, 2)               # Funktioniert nicht, da keine Zeichenkette
 
-(Get-Date).ToString().Substring(0,2)    # Ein Datumsobjekt in einen STring umwandeln
+(Get-Date).ToString().Substring(0, 2)    # Ein Datumsobjekt in einen STring umwandeln
 
 (Get-Date) - 'Patrick'                  # Geht natürlich auch nicht
 
