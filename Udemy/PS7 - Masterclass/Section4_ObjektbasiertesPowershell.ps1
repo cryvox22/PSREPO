@@ -172,3 +172,115 @@ $split = $nameneu.Split('.')
 $split -join ', ' #Exkurs -join
 
 $split[0].Substring(0,1).ToUpper() + $split[0].Substring(1) + ' ' +$split[1].Substring(0,1).ToUpper()+$split[1].Substring(1)
+
+
+
+#Advanced Beispiel: 
+
+#Subdomain auslesen: (contoso.com)
+
+$name1 = 'patrick.gentner@contoso.com)'
+$index1 = $name1.IndexOf('@') # Ankerpunkt 1 = Position 15
+$index2 = $name1.LastIndexOf('.') #Ankerpunkt 2 = Position 23
+$name1.Substring($index1, $index2) #Powershell Rechnet 15 + 23 (38)
+$name1.Length # länge = 28
+
+$name1.Substring($index1+1, $index2-$index1-1) #OK
+
+
+
+$liste = @(
+    'Patrick Gentner'
+    'Franz Bizeps'
+)
+
+foreach ($1 in $liste){
+    ($1 -split ' ')[1]
+}
+
+
+#Stringmanipulation in AD
+
+Get-ADUser -Filter * -SearchBase "OU=HR,DC=PAGR,DC=INET" | ForEach-Object { Set-ADUser $_ -SamAccountName ($_.givenname.Substring(0,1) + '.' + $_.Surname).ToLower() -UserPrincipalName (($_.givenname.Substring(0,1) + '.' + $_.Surname).ToLower() + "@" + "$env:userdnsdomain")}
+
+
+#RegEx - Reguläre Ausdrücke
+
+#hat der string eine Zahl enthalten?
+'patrickgentner27@gmail.com' -match '\d'
+'patrick.gentner@outlook.de' -match '\d'
+
+#gibt es einen Umlaut?
+'patrick.gäntner' -match '[^ma-zA-Z]'
+
+#Alle Zahlen entfernen + Domäne entfernen
+$a = 'patrickgentner27@gmail.com'
+
+$pattern = '\d+'
+
+$a -replace $pattern,"" -replace 'gmail.com'
+
+#Liste
+
+$array = @(
+    'patrick.gentner@outlook.de'
+    'patrickgentner27@gmail.com'
+    'patrickgentner@gmx.de'
+    '-patrick.gentenr@.com'
+    'herbert.huber@gmail.comcom'
+    'hansi'
+    '123'
+    '@hei9'
+)
+
+
+###Simple statements
+
+$array | Select-String -Pattern '@'
+
+###Regex E-Mail Adressen suchen
+#ristl.IT
+$regmail = '^[a-zA-Z0-9][a-zA-Z0-9._-]+[a-zA-Z0-9]@[a-zA-Z0-9][a-zA-Z0-9._-]+[a-zA-Z0-9]\.[a-zA-Z]{2,4}$'
+$array | Select-String -Pattern $regmail
+
+
+
+#WMI-Klassen 
+
+Get-CimInstance -ClassName win32_ # STRG + Leertaste für die Auflistung (nur in pwsh.exe)
+Get-CimInstance -ClassName Win32_OperatingSystem
+Get-CimInstance -ClassName Win32_OperatingSystem Select-Object *
+Get-CimInstance -ClassName Win32_OperatingSystem | Get-Member
+
+#Remoteabruf 
+Get-CimInstance Win32_OperatingSystem -ComputerName delert
+
+#RAM anzeigen
+
+Get-CimInstance -ClassName Win32_PhysicalMemory | Select-Object Manufacturer, BankLabel,ConfiguredClockSpeed, SerialNumber, @{n='RAM'; e={[Math]::Round($_.Capacity/1GB)}} | Format-Table
+
+#Informationen von Servern abrufen
+
+$server =(Get-ADComputer -Filter 'operatingsystem -like "*server*"').Name
+Get-CimInstance Win32_OperatingSystem -ComputerName $server | Select-Object -Property PSComputerName, Caption, InstallDate, LastBootUpTime | Out-File $home\testserver.txt
+
+
+
+### [0-9]
+
+$a='yPatrick.Gruenauer1283   @outlook.com'
+$a.TrimStart('y').ToLower() -replace '[0-9]','' -replace 'outlook','gmail' -replace '\s+','' # ODER (besser ?)
+
+$a.Substring(1).ToLower() -replace '[0-9]','' -replace 'outlook','gmail' -replace '\s+',''
+
+### Regex \d
+
+$a='yPatrick.Gruenauer1283   @outlook.com'
+
+$a.TrimStart('y').ToLower() -replace '\d+' -replace 'outlook','gmail' -replace '\s+'
+
+### Regex \s
+
+#\s means "one space", and \s+ means "one or more spaces"
+
+get-date |Get-Member
