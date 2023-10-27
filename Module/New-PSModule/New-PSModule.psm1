@@ -30,7 +30,7 @@ function New-PSModule {
     
     #Create Path and Guid
     $Guid = New-Guid
-    $Path = "$(Get-Location)$($ModulName).psd1"
+    $Path = "$(Get-Location)\$($ModulName).psd1"
     #$Create a Splat for cmdlet-Settings
     $ModulManifestSettings = @{
         Path = $Path
@@ -43,5 +43,5 @@ function New-PSModule {
         Copyright = '(c) Patrick Gentner. All rights reserved.'
     }
 
-    New-ModuleManifest @$ModulManifestSettings
+    New-ModuleManifest @ModulManifestSettings
 }
