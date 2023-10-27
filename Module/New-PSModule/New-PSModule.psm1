@@ -10,8 +10,8 @@
 .PARAMETER ModulName [string]
     This is the name used for the new Module psd1 & psm1 Files
 .EXAMPLE
-    Test-MyTestFunction -Verbose
-    Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+    New-PSModule -ModuleName Test
+    Creates a new Module (psm1) and a Manifest (psd1) with the right settings
 #>
 function New-PSModule {
     [CmdletBinding()]
@@ -27,10 +27,14 @@ function New-PSModule {
         [string]
         $ModulName
     )
-
+    
+    #Create Path and Guid
+    $Guid = New-Guid
+    $Path = "$(Get-Location)$($ModulName).psd1"
+    #$Create a Splat for cmdlet-Settings
     $ModulManifestSettings = @{
-        Path = "$(Get-Location)$($ModulName).psd1"
-        GUID = (New-Guid)
+        Path = $Path
+        GUID = $Guid
         Author = $env:USERNAME
         CompanyName = "Default"
         RootModule = (New-Item -Name "$($ModulName).psm1" -ItemType File).Name
